@@ -32,7 +32,9 @@ public class ItemRepositoryTest {
         itemRepository.create(item1);
         Assertions.assertEquals(item1, itemRepository.get(1).get());
 
-        Item item2 = createTestItem().withName("Smth useful item").withDescription("UseLess description");
+        Item item2 = createTestItem();
+        item2.setName("Smth useful item");
+        item2.setDescription("UseLess description");
         itemRepository.create(item2);
         Assertions.assertEquals(item2, itemRepository.get(2).get());
 
@@ -44,8 +46,10 @@ public class ItemRepositoryTest {
     @Test
     void shouldUpdateItem() {
         Item item = createTestItem();
-        Item itemAsUpdate = createTestItem().withId(1L).withName("Smth useful item")
-                .withDescription("UseLess description");
+        Item itemAsUpdate = createTestItem();
+        itemAsUpdate.setId(1L);
+        itemAsUpdate.setName("Smth useful item");
+        itemAsUpdate.setDescription("UseLess description");
         itemRepository.create(item);
         itemRepository.update(itemAsUpdate);
 
@@ -56,8 +60,10 @@ public class ItemRepositoryTest {
     @Test
     void shouldNotUpdateItemIfIdDoesNotExist() {
         Item item = createTestItem();
-        Item itemAsUpdate = createTestItem().withId(12L).withName("Smth useful item")
-                .withDescription("UseLess description");
+        Item itemAsUpdate = createTestItem();
+        itemAsUpdate.setId(12L);
+        itemAsUpdate.setName("Smth useful item");
+        itemAsUpdate.setDescription("UseLess description");
 
         itemRepository.create(item);
 
@@ -70,10 +76,12 @@ public class ItemRepositoryTest {
     @Test
     void shouldReturnItemById() {
         Item item1 = createTestItem();
-        Item item2 = createTestItem().withName("Smth useful item")
-                .withDescription("UseLess description");
-        Item item3 = createTestItem().withName("Useful item")
-                .withDescription("Description");
+        Item item2 = createTestItem();
+        item2.setName("Smth useful item");
+        item2.setDescription("UseLess description");
+        Item item3 = createTestItem();
+        item3.setName("Useful item");
+        item3.setDescription("Description");
 
         itemRepository.create(item1);
         itemRepository.create(item2);
@@ -88,8 +96,9 @@ public class ItemRepositoryTest {
     @Test
     void shouldNotReturnItemByIdIfIdDoesNotExist() {
         Item item1 = createTestItem();
-        Item item2 = createTestItem().withName("Smth useful item")
-                .withDescription("UseLess description");
+        Item item2 = createTestItem();
+        item2.setName("Smth useful item");
+        item2.setDescription("UseLess description");
 
         itemRepository.create(item1);
         itemRepository.create(item2);
@@ -105,11 +114,16 @@ public class ItemRepositoryTest {
         User user = createTestUser();
         userRepository.create(user);
 
-        Item item1 = createTestItem().withOwner(user);
-        Item item2 = createTestItem().withName("Smth useful item")
-                .withDescription("UseLess description").withOwner(user);
-        Item item3 = createTestItem().withName("Useful item")
-                .withDescription("Description").withOwner(user);
+        Item item1 = createTestItem();
+        item1.setOwner(user);
+        Item item2 = createTestItem();
+        item2.setName("Smth useful item");
+        item2.setDescription("UseLess description");
+        item2.setOwner(user);
+        Item item3 = createTestItem();
+        item3.setName("Useful item");
+        item3.setDescription("Description");
+        item3.setOwner(user);
 
         itemRepository.create(item1);
         itemRepository.create(item2);
@@ -126,11 +140,16 @@ public class ItemRepositoryTest {
         User user = createTestUser();
         userRepository.create(user);
 
-        Item item1 = createTestItem().withOwner(user);
-        Item item2 = createTestItem().withName("Smth useful item")
-                .withDescription("UseLess description").withOwner(user);
-        Item item3 = createTestItem().withName("Useful item")
-                .withDescription("Description").withOwner(user);
+        Item item1 = createTestItem();
+        item1.setOwner(user);
+        Item item2 = createTestItem();
+        item2.setName("Smth useful item");
+        item2.setDescription("UseLess description");
+        item2.setOwner(user);
+        Item item3 = createTestItem();
+        item3.setName("Useful item");
+        item3.setDescription("Description");
+        item3.setOwner(user);
 
         itemRepository.create(item1);
         itemRepository.create(item2);
@@ -147,11 +166,16 @@ public class ItemRepositoryTest {
         User user = createTestUser();
         userRepository.create(user);
 
-        Item item1 = createTestItem().withOwner(user);
-        Item item2 = createTestItem().withName("Smth useful item")
-                .withDescription("UseLess description").withOwner(user);
-        Item item3 = createTestItem().withName("Useful item")
-                .withDescription("Description").withOwner(user);
+        Item item1 = createTestItem();
+        item1.setOwner(user);
+        Item item2 = createTestItem();
+        item2.setName("Smth useful item");
+        item2.setDescription("UseLess description");
+        item2.setOwner(user);
+        Item item3 = createTestItem();
+        item3.setName("Useful item");
+        item3.setDescription("Description");
+        item3.setOwner(user);
 
         itemRepository.create(item1);
         itemRepository.create(item2);
@@ -168,11 +192,16 @@ public class ItemRepositoryTest {
         User user = createTestUser();
         userRepository.create(user);
 
-        Item item1 = createTestItem().withOwner(user);
-        Item item2 = createTestItem().withName("Smth useful item")
-                .withDescription("UseLess description").withOwner(user);
-        Item item3 = createTestItem().withName("Useful item")
-                .withDescription("Description").withOwner(user);
+        Item item1 = createTestItem();
+        item1.setOwner(user);
+        Item item2 = createTestItem();
+        item2.setName("Smth useful item");
+        item2.setDescription("UseLess description");
+        item2.setOwner(user);
+        Item item3 = createTestItem();
+        item3.setName("Useful item");
+        item3.setDescription("Description");
+        item3.setOwner(user);
 
         itemRepository.create(item1);
         itemRepository.create(item2);
@@ -185,10 +214,12 @@ public class ItemRepositoryTest {
     @Test
     void shouldDeleteUserById() {
         Item item1 = createTestItem();
-        Item item2 = createTestItem().withName("Smth useful item")
-                .withDescription("UseLess description");
-        Item item3 = createTestItem().withName("Useful item")
-                .withDescription("Description");
+        Item item2 = createTestItem();
+        item2.setName("Smth useful item");
+        item2.setDescription("UseLess description");
+        Item item3 = createTestItem();
+        item3.setName("Useful item");
+        item3.setDescription("Description");
 
         itemRepository.create(item1);
         itemRepository.create(item2);
@@ -201,10 +232,12 @@ public class ItemRepositoryTest {
     @Test
     void shouldNotDeleteUserByUnexistingId() {
         Item item1 = createTestItem();
-        Item item2 = createTestItem().withName("Smth useful item")
-                .withDescription("UseLess description");
-        Item item3 = createTestItem().withName("Useful item")
-                .withDescription("Description");
+        Item item2 = createTestItem();
+        item2.setName("Smth useful item");
+        item2.setDescription("UseLess description");
+        Item item3 = createTestItem();
+        item3.setName("Useful item");
+        item3.setDescription("Description");
 
         itemRepository.create(item1);
         itemRepository.create(item2);

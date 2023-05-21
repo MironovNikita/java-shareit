@@ -26,7 +26,9 @@ public class UserRepositoryTest {
         System.out.println(userRepository.getAll());
         Assertions.assertEquals(user1, userRepository.get(1).get());
 
-        User user2 = createTestUser().withName("User").withEmail("test@mail.ru");
+        User user2 = createTestUser();
+        user2.setName("User");
+        user2.setEmail("test@mail.ru");
         userRepository.create(user2);
         Assertions.assertEquals(user2, userRepository.get(2).get());
 
@@ -37,7 +39,10 @@ public class UserRepositoryTest {
     @Test
     void shouldUpdateUser() {
         User user = createTestUser();
-        User userAsUpdate = createTestUser().withId(1L).withName("John").withEmail("test@mail.ru");
+        User userAsUpdate = createTestUser();
+        userAsUpdate.setId(1L);
+        userAsUpdate.setName("John");
+        userAsUpdate.setEmail("test@mail.ru");
         userRepository.create(user);
 
         userRepository.update(userAsUpdate);
@@ -49,7 +54,10 @@ public class UserRepositoryTest {
     @Test
     void shouldNotUpdateUserIfIdDoesNotExist() {
         User user = createTestUser();
-        User userAsUpdate = createTestUser().withId(12L).withName("Name2").withEmail("test2@yandex.ru");
+        User userAsUpdate = createTestUser();
+        userAsUpdate.setId(12L);
+        userAsUpdate.setName("John");
+        userAsUpdate.setEmail("test@mail.ru");
         userRepository.create(user);
 
         assertThat(userRepository.update(userAsUpdate)).isNotEqualTo(userRepository.get(1));
@@ -61,8 +69,12 @@ public class UserRepositoryTest {
     @Test
     void shouldReturnUserById() {
         User user1 = createTestUser();
-        User user2 = createTestUser().withName("Name2").withEmail("test2@yandex.ru");
-        User user3 = createTestUser().withName("Name3").withEmail("test3@yandex.ru");
+        User user2 = createTestUser();
+        user2.setName("Name2");
+        user2.setEmail("test2@yandex.ru");
+        User user3 = createTestUser();
+        user3.setName("Name3");
+        user3.setEmail("test3@yandex.ru");
 
         userRepository.create(user1);
         userRepository.create(user2);
@@ -77,7 +89,9 @@ public class UserRepositoryTest {
     @Test
     void shouldReturnUserByIdIfIdDoesNotExist() {
         User user1 = createTestUser();
-        User user2 = createTestUser().withName("Name2").withEmail("test2@yandex.ru");
+        User user2 = createTestUser();
+        user2.setName("Name2");
+        user2.setEmail("test2@yandex.ru");
 
         userRepository.create(user1);
         userRepository.create(user2);
@@ -108,8 +122,12 @@ public class UserRepositoryTest {
     @Test
     void shouldReturnAllUsers() {
         User user1 = createTestUser();
-        User user2 = createTestUser().withName("Name2").withEmail("test2@yandex.ru");
-        User user3 = createTestUser().withName("Name3").withEmail("test3@yandex.ru");
+        User user2 = createTestUser();
+        user2.setName("Name2");
+        user2.setEmail("test2@yandex.ru");
+        User user3 = createTestUser();
+        user3.setName("Name3");
+        user3.setEmail("test3@yandex.ru");
 
         userRepository.create(user1);
         userRepository.create(user2);
@@ -129,8 +147,12 @@ public class UserRepositoryTest {
     @Test
     void shouldDeleteUserById() {
         User user1 = createTestUser();
-        User user2 = createTestUser().withName("Name2").withEmail("test2@yandex.ru");
-        User user3 = createTestUser().withName("Name3").withEmail("test3@yandex.ru");
+        User user2 = createTestUser();
+        user2.setName("Name2");
+        user2.setEmail("test2@yandex.ru");
+        User user3 = createTestUser();
+        user3.setName("Name3");
+        user3.setEmail("test3@yandex.ru");
 
         userRepository.create(user1);
         userRepository.create(user2);
@@ -145,7 +167,9 @@ public class UserRepositoryTest {
     @Test
     void shouldNotDeleteAnyUserByNonExistentId() {
         User user1 = createTestUser();
-        User user2 = createTestUser().withName("Name2").withEmail("test2@yandex.ru");
+        User user2 = createTestUser();
+        user2.setName("Name2");
+        user2.setEmail("test2@yandex.ru");
 
         userRepository.create(user1);
         userRepository.create(user2);
