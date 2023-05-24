@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.common.exception.ObjectNotFoundException;
-import ru.practicum.shareit.item.dto.ItemDtoCreate;
-import ru.practicum.shareit.item.dto.ItemDtoUpdate;
+import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
@@ -22,15 +21,15 @@ public class ItemService {
     private final ItemMapper itemMapper;
     private final UserService userService;
 
-    public Item create(long userId, ItemDtoCreate itemDtoCreate) {
+    public Item create(long userId, ItemDto itemDto) {
         User user = userService.get(userId);
-        Item item = itemMapper.transformItemDtoToItem(itemDtoCreate);
+        Item item = itemMapper.transformItemDtoToItem(itemDto);
         item.setOwner(user);
 
         return itemRepository.create(item);
     }
 
-    public Item update(long id, long userId, ItemDtoUpdate itemDtoUpdate) {
+    public Item update(long id, long userId, ItemDto itemDto) {
         User user = userService.get(userId);
         Item item = itemRepository.get(id).orElseThrow(() -> new ObjectNotFoundException("Предмет", id));
 
@@ -38,16 +37,16 @@ public class ItemService {
             throw new ObjectNotFoundException("Предмет", id);
         }
 
-        if (itemDtoUpdate.getName() != null) {
-            item.setName(itemDtoUpdate.getName());
+        if (itemDto.getName() != null) {
+            item.setName(itemDto.getName());
         }
 
-        if (itemDtoUpdate.getDescription() != null) {
-            item.setDescription(itemDtoUpdate.getDescription());
+        if (itemDto.getDescription() != null) {
+            item.setDescription(itemDto.getDescription());
         }
 
-        if (itemDtoUpdate.getAvailable() != null) {
-            item.setAvailable(itemDtoUpdate.getAvailable());
+        if (itemDto.getAvailable() != null) {
+            item.setAvailable(itemDto.getAvailable());
         }
 
         return itemRepository.update(item);

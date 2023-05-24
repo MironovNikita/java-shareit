@@ -1,16 +1,17 @@
 package ru.practicum.shareit.item.dto;
 
 import lombok.Value;
+import ru.practicum.shareit.common.validation.Create;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Value
-public class ItemDtoCreate {
-    @NotBlank(message = "Необходимо название вещи!")
+public class ItemDto {
+    @NotBlank(groups = {Create.class}, message = "Необходимо название вещи!")
     String name;
-    @NotBlank(message = "Необходимо описание вещи!")
+    @NotBlank(groups = {Create.class}, message = "Необходимо описание вещи!")
     String description;
-    @NotNull(message = "Необходим статус вещи!")
+    @NotNull(groups = {Create.class}, message = "Необходим статус вещи!")
     Boolean available;
 }

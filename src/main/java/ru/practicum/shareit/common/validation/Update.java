@@ -1,2 +1,4 @@
-package ru.practicum.shareit.item.dto;public interface Update {
+package ru.practicum.shareit.common.validation;
+
+public interface Update {
 }

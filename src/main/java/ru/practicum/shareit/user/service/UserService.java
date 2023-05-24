@@ -5,8 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.common.exception.DuplicateEmailException;
 import ru.practicum.shareit.common.exception.ObjectNotFoundException;
-import ru.practicum.shareit.user.dto.UserDtoCreate;
-import ru.practicum.shareit.user.dto.UserDtoUpdate;
+import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
@@ -20,27 +19,27 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public User create(UserDtoCreate userDtoCreate) {
-        if (emailExistingCheck(userDtoCreate.getEmail())) {
-            throw new DuplicateEmailException(userDtoCreate.getEmail());
+    public User create(UserDto userDto) {
+        if (emailExistingCheck(userDto.getEmail())) {
+            throw new DuplicateEmailException(userDto.getEmail());
         }
-        User user = userMapper.transformUserDtoToUser(userDtoCreate);
+        User user = userMapper.transformUserDtoToUser(userDto);
         return userRepository.create(user);
     }
 
-    public User update(long id, UserDtoUpdate userDtoUpdate) {
+    public User update(long id, UserDto userDto) {
         User user = userRepository.get(id).orElseThrow(() -> new ObjectNotFoundException("Пользователь", id));
 
-        if (userDtoUpdate.getEmail() != null && !userDtoUpdate.getEmail().equals(user.getEmail())) {
-            if (!emailExistingCheck(userDtoUpdate.getEmail())) {
-                user.setEmail(userDtoUpdate.getEmail());
+        if (userDto.getEmail() != null && !userDto.getEmail().equals(user.getEmail())) {
+            if (!emailExistingCheck(userDto.getEmail())) {
+                user.setEmail(userDto.getEmail());
             } else {
-                throw new DuplicateEmailException(userDtoUpdate.getEmail());
+                throw new DuplicateEmailException(userDto.getEmail());
             }
         }
 
-        if (userDtoUpdate.getName() != null && !userDtoUpdate.getName().isBlank()) {
-            user.setName(userDtoUpdate.getName());
+        if (userDto.getName() != null && !userDto.getName().isBlank()) {
+            user.setName(userDto.getName());
         }
 
         return userRepository.update(user);

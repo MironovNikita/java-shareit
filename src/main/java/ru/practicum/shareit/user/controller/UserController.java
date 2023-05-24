@@ -3,13 +3,14 @@ package ru.practicum.shareit.user.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.user.dto.UserDtoCreate;
-import ru.practicum.shareit.user.dto.UserDtoUpdate;
+import ru.practicum.shareit.common.validation.Create;
+import ru.practicum.shareit.common.validation.Update;
+import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -21,16 +22,16 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(@Valid @RequestBody UserDtoCreate userDtoCreate) {
-        log.info("Запрос на создание пользователя " + userDtoCreate.getName());
-        return userService.create(userDtoCreate);
+    public User createUser(@Validated(Create.class) @RequestBody UserDto userDto) {
+        log.info("Запрос на создание пользователя " + userDto.getName());
+        return userService.create(userDto);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public User updateUser(@PathVariable long id, @Valid @RequestBody UserDtoUpdate userDtoUpdate) {
-        log.info("Запрос на обновление пользователя " + userDtoUpdate);
-        return userService.update(id, userDtoUpdate);
+    public User updateUser(@PathVariable long id, @Validated(Update.class) @RequestBody UserDto userDto) {
+        log.info("Запрос на обновление пользователя " + userDto);
+        return userService.update(id, userDto);
     }
 
     @GetMapping("/{id}")

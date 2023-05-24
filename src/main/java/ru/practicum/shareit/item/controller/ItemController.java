@@ -3,13 +3,14 @@ package ru.practicum.shareit.item.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.item.dto.ItemDtoCreate;
-import ru.practicum.shareit.item.dto.ItemDtoUpdate;
+import ru.practicum.shareit.common.validation.Create;
+import ru.practicum.shareit.common.validation.Update;
+import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -22,7 +23,8 @@ public class ItemController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Item createItem(@RequestHeader(HEADER_USER_ID) long userId, @Valid @RequestBody ItemDtoCreate itemDto) {
+    public Item createItem(@RequestHeader(HEADER_USER_ID) long userId,
+                           @Validated(Create.class) @RequestBody ItemDto itemDto) {
         log.info("Запрос на создание предмета " + itemDto.getName() + " для пользователя с id {}", userId);
         return itemService.create(userId, itemDto);
     }
@@ -30,9 +32,9 @@ public class ItemController {
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Item updateItem(@PathVariable long id, @RequestHeader(HEADER_USER_ID) long userId,
-                           @Valid @RequestBody ItemDtoUpdate itemDtoUpdate) {
-        log.info("Запрос на обновление предмета " + itemDtoUpdate.getName() + " для пользователя с id {}", userId);
-        return itemService.update(id, userId, itemDtoUpdate);
+                           @Validated(Update.class) @RequestBody ItemDto itemDto) {
+        log.info("Запрос на обновление предмета " + itemDto.getName() + " для пользователя с id {}", userId);
+        return itemService.update(id, userId, itemDto);
     }
 
     @GetMapping("{id}")
