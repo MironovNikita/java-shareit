@@ -7,15 +7,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Map;
+
 
 @Slf4j
 @RestControllerAdvice
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class ExceptionsHandler {
-    @ExceptionHandler(ObjectNotFoundException.class)
+    @ExceptionHandler({ObjectNotFoundException.class, SelfItemBookingException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleObjectNotFoundException(ObjectNotFoundException exception) {
-        log.error("404 - {}}", exception.getMessage());
+    public String handleObjectNotFoundAndSelfItemBookingException(RuntimeException exception) {
+        log.error("404 - {}", exception.getMessage());
         return "404 - " + exception.getMessage();
     }
 
@@ -32,6 +34,20 @@ public class ExceptionsHandler {
         log.error("400 - Ошибка валидации поля " + exception.getFieldError());
         return "Ошибка валидации полей объекта " + exception.getObjectName() + "\n" +
                 "Сообщение: " + exception.getFieldError();
+    }
+
+    @ExceptionHandler(BookingException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleBookingException(BookingException exception) {
+        log.error("400 - {}", exception.getMessage());
+        return "400 - " + exception.getMessage();
+    }
+
+    @ExceptionHandler(UnsupportedStateException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Map<String,String> handleUnsupportedStateException(UnsupportedStateException exception) {
+        log.error("500 - {}", exception.getMessage());
+        return Map.of("error", exception.getMessage());
     }
 
     @ExceptionHandler

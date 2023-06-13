@@ -1,6 +1,8 @@
 package ru.practicum.shareit.user.service;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.common.exception.DuplicateEmailException;
@@ -15,55 +17,47 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserService {
-    private final UserRepository userRepository;
-    private final UserMapper userMapper;
+    UserRepository userRepository;
+    UserMapper userMapper;
 
     public User create(UserDto userDto) {
-        if (emailExistingCheck(userDto.getEmail())) {
-            throw new DuplicateEmailException(userDto.getEmail());
-        }
         User user = userMapper.transformUserDtoToUser(userDto);
-        return userRepository.create(user);
+        return userRepository.save(user);
     }
 
     public User update(long id, UserDto userDto) {
-        User user = userRepository.get(id).orElseThrow(() -> new ObjectNotFoundException("Пользователь", id));
+        User user = userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Пользователь", id));
 
         if (userDto.getEmail() != null && !userDto.getEmail().equals(user.getEmail())) {
-            if (!emailExistingCheck(userDto.getEmail())) {
-                user.setEmail(userDto.getEmail());
-            } else {
-                throw new DuplicateEmailException(userDto.getEmail());
-            }
+            emailExistingCheck(userDto.getEmail());
+            user.setEmail(userDto.getEmail());
         }
 
         if (userDto.getName() != null && !userDto.getName().isBlank()) {
             user.setName(userDto.getName());
         }
 
-        return userRepository.update(user);
+        return userRepository.save(user);
     }
 
     public User get(long id) {
-        return userRepository.get(id).orElseThrow(() -> new ObjectNotFoundException("Пользователь", id));
+        return userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Пользователь", id));
     }
 
     public List<User> getAll() {
-        return userRepository.getAll();
+        return userRepository.findAll();
     }
 
     public void delete(long id) {
-        boolean isUserDeleted = userRepository.delete(id);
-        if (!isUserDeleted) {
-            log.error("Пользователь с идентификатором {} не найден!", id);
-            throw new ObjectNotFoundException("Пользователь", id);
-        }
+        User user = userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Пользователь", id));
+        userRepository.deleteById(id);
     }
 
-    private boolean emailExistingCheck(String email) {
-        return userRepository.getAll()
-                .stream()
-                .anyMatch(user -> user.getEmail().equals(email));
+    private void emailExistingCheck(String email) {
+        userRepository.findUserByEmail(email).ifPresent(user -> {
+            throw new DuplicateEmailException(email);
+        });
     }
 }
