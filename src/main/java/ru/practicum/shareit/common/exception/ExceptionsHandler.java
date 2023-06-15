@@ -18,29 +18,29 @@ public class ExceptionsHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleObjectNotFoundAndSelfItemBookingException(RuntimeException exception) {
         log.error("404 - {}", exception.getMessage());
-        return "404 - " + exception.getMessage();
+        return String.format("404 - %s", exception.getMessage());
     }
 
     @ExceptionHandler(DuplicateEmailException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public String handleDuplicateEmailException(DuplicateEmailException exception) {
         log.error("409 - {}", exception.getMessage());
-        return "409 - " + exception.getMessage();
+        return String.format("409 - %s", exception.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
-        log.error("400 - Ошибка валидации поля " + exception.getFieldError());
-        return "Ошибка валидации полей объекта " + exception.getObjectName() + "\n" +
-                "Сообщение: " + exception.getFieldError();
+        log.error("400 - Ошибка валидации поля {}", exception.getFieldError());
+        return String.format("Ошибка валидации полей объекта %s%n Сообщение: %s", exception.getObjectName(),
+                exception.getFieldError());
     }
 
     @ExceptionHandler(BookingException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleBookingException(BookingException exception) {
         log.error("400 - {}", exception.getMessage());
-        return "400 - " + exception.getMessage();
+        return String.format("400 - %s", exception.getMessage());
     }
 
     @ExceptionHandler(UnsupportedStateException.class)
@@ -54,6 +54,6 @@ public class ExceptionsHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleInternalServerError(Exception exception) {
         log.error("500 - {}", exception.getMessage());
-        return "500 - " + exception.getMessage();
+        return String.format("500 - %s", exception.getMessage());
     }
 }
