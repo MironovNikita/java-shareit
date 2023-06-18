@@ -22,35 +22,35 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(@Validated(Create.class) @RequestBody UserDto userDto) {
+    public User create(@Validated(Create.class) @RequestBody UserDto userDto) {
         log.info("Запрос на создание пользователя " + userDto.getName());
         return userService.create(userDto);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public User updateUser(@PathVariable long id, @Validated(Update.class) @RequestBody UserDto userDto) {
+    public User update(@PathVariable long id, @Validated(Update.class) @RequestBody UserDto userDto) {
         log.info("Запрос на обновление пользователя " + userDto);
         return userService.update(id, userDto);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public User getUser(@PathVariable long id) {
+    public User get(@PathVariable long id) {
         log.info("Запрос на получение пользователя с ID: {}", id);
         return userService.get(id);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<User> getAllUsers() {
+    public List<User> getAll() {
         log.info("Запрос на получение списка всех пользователей размером {}", userService.getAll().size());
         return userService.getAll();
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteUser(@PathVariable long id) {
+    public void delete(@PathVariable long id) {
         log.info("Запрос на удаление пользователя с ID: {}", id);
         userService.delete(id);
     }
