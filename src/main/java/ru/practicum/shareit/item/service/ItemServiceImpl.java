@@ -1,8 +1,6 @@
 package ru.practicum.shareit.item.service;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,16 +10,13 @@ import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.common.exception.BookingException;
 import ru.practicum.shareit.common.exception.ObjectNotFoundException;
-import ru.practicum.shareit.item.comment.Comment;
-import ru.practicum.shareit.item.comment.CommentDto;
-import ru.practicum.shareit.item.comment.CommentMapper;
-import ru.practicum.shareit.item.comment.CommentService;
+import ru.practicum.shareit.item.comment.*;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.service.UserServiceImpl;
+import ru.practicum.shareit.user.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -33,20 +28,19 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ItemServiceImpl implements ItemService {
-    ItemRepository itemRepository;
-    ItemMapper itemMapper;
-    UserServiceImpl userServiceImpl;
-    BookingRepository bookingRepository;
-    BookingMapper bookingMapper;
-    CommentMapper commentMapper;
-    CommentService commentService;
+    private final ItemRepository itemRepository;
+    private final ItemMapper itemMapper;
+    private final UserService userService;
+    private final BookingRepository bookingRepository;
+    private final BookingMapper bookingMapper;
+    private final CommentMapper commentMapper;
+    private final CommentService commentService;
 
     @Override
     @Transactional
     public Item create(long userId, ItemDto itemDto) {
-        User user = userServiceImpl.get(userId);
+        User user = userService.get(userId);
         Item item = itemMapper.transformItemDtoToItem(itemDto);
         item.setOwner(user);
 
@@ -56,8 +50,11 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public Item update(long itemId, long userId, ItemDto itemDto) {
-        User user = userServiceImpl.get(userId);
-        Item item = itemRepository.findById(itemId).orElseThrow(() -> new ObjectNotFoundException("Предмет", itemId));
+        User user = userService.get(userId);
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> {
+            log.error("Предмет с ID {} не найден!", itemId);
+            return new ObjectNotFoundException("Предмет", itemId);
+        });
 
         if (!user.equals(item.getOwner())) {
             log.error("Попытка обновления предмета пользователем с ID {} при собственнике с ID {}", userId,
@@ -77,14 +74,17 @@ public class ItemServiceImpl implements ItemService {
             item.setAvailable(itemDto.getAvailable());
         }
 
-        return itemRepository.save(item);
+        return item;
     }
 
     @Override
     @Transactional
     public CommentDto comment(long userId, long itemId, CommentDto commentDto) {
-        User user = userServiceImpl.get(userId);
-        Item item = itemRepository.findById(itemId).orElseThrow(() -> new ObjectNotFoundException("Предмет", itemId));
+        User user = userService.get(userId);
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> {
+            log.error("Предмет с ID {} не найден!", itemId);
+            return new ObjectNotFoundException("Предмет", itemId);
+        });
 
         List<Booking> userBookingList = bookingRepository.findAllByBookerIdAndEndBeforeOrderByStartDesc(
                 userId, LocalDateTime.now());
@@ -104,7 +104,10 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Item get(long itemId, long userId) {
-        Item item = itemRepository.findById(itemId).orElseThrow(() -> new ObjectNotFoundException("Предмет", itemId));
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> {
+            log.error("Предмет с ID {} не найден!", itemId);
+            return new ObjectNotFoundException("Предмет", itemId);
+        });
 
         if (item.getOwner().getId() == userId) {
             List<Booking> bookingList = bookingRepository.findAllByItemIdAndStatusOrderByStartAsc(itemId,
@@ -163,7 +166,10 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public void delete(long id) {
-        Item item = itemRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Предмет", id));
+        Item item = itemRepository.findById(id).orElseThrow(() -> {
+            log.error("Предмет с ID {} не найден!", id);
+            return new ObjectNotFoundException("Предмет", id);
+        });
         itemRepository.deleteById(id);
     }
 }

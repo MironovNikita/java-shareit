@@ -19,10 +19,9 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserServiceImpl implements UserService {
-    UserRepository userRepository;
-    UserMapper userMapper;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Override
     @Transactional
@@ -34,7 +33,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User update(long id, UserDto userDto) {
-        User user = userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Пользователь", id));
+        User user = userRepository.findById(id).orElseThrow(() -> {
+            log.error("Пользователь с ID {} не найден!", id);
+            return new ObjectNotFoundException("Пользователь", id);
+        });
 
         if (userDto.getEmail() != null && !userDto.getEmail().equals(user.getEmail())) {
             emailExistingCheck(userDto.getEmail());
@@ -45,12 +47,15 @@ public class UserServiceImpl implements UserService {
             user.setName(userDto.getName());
         }
 
-        return userRepository.save(user);
+        return user;
     }
 
     @Override
     public User get(long id) {
-        return userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Пользователь", id));
+        return userRepository.findById(id).orElseThrow(() -> {
+            log.error("Пользователь с ID {} не найден!", id);
+            return new ObjectNotFoundException("Пользователь", id);
+        });
     }
 
     @Override
@@ -61,7 +66,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void delete(long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Пользователь", id));
+        User user = userRepository.findById(id).orElseThrow(() -> {
+            log.error("Пользователь с ID {} не найден!", id);
+            return new ObjectNotFoundException("Пользователь", id);
+        });
         userRepository.deleteById(id);
     }
 

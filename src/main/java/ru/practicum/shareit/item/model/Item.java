@@ -19,27 +19,26 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @NotBlank(groups = {Create.class}, message = "Необходимо название вещи!")
     @Size(groups = Create.class, min = 1, max = 255, message = "Название вещи должно быть от 1 до 255 символов!")
-    String name;
+    private String name;
     @NotBlank(groups = {Create.class}, message = "Необходимо описание вещи!")
     @Size(groups = Create.class, min = 1, max = 500, message = "Описание вещи должно быть от 1 до 500 символов!")
-    String description;
+    private String description;
     @NotNull(groups = {Create.class}, message = "Необходим статус вещи!")
-    Boolean available;
+    private Boolean available;
     @ManyToOne
     @JoinColumn(name = "owner_id")
-    User owner;
+    private User owner;
 
     @Transient
-    BookingDatesDto lastBooking;
+    private BookingDatesDto lastBooking;
     @Transient
-    BookingDatesDto nextBooking;
+    private BookingDatesDto nextBooking;
     @Transient
-    List<CommentDto> comments;
+    private List<CommentDto> comments;
 }

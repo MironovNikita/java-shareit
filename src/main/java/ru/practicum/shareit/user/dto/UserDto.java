@@ -11,10 +11,12 @@ import javax.validation.constraints.Size;
 @Value
 public class UserDto {
     @NotBlank(groups = {Create.class}, message = "Необходимо ввести имя пользователя!")
-    @Size(groups = Create.class, min = 1, max = 255, message = "Размер имени должен быть от 1 до 255 символов!")
+    @Size(groups = {Create.class, Update.class}, min = 1, max = 255,
+            message = "Размер имени должен быть от 1 до 255 символов!")
     String name;
     @Email(groups = {Create.class, Update.class}, message = "Введён некорректный email!")
     @NotBlank(groups = {Create.class}, message = "Необходимо ввести email!")
-    @Size(groups = {Create.class}, min = 5, max = 512, message = "Размер email должен быть от 5 до 512 символов!")
+    @Size(groups = {Create.class, Update.class}, min = 5, max = 512,
+            message = "Размер email должен быть от 5 до 512 символов!")
     String email;
 }

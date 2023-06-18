@@ -1,8 +1,6 @@
 package ru.practicum.shareit.booking.service;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +14,9 @@ import ru.practicum.shareit.common.exception.ObjectNotFoundException;
 import ru.practicum.shareit.common.exception.SelfItemBookingException;
 import ru.practicum.shareit.common.exception.UnsupportedStateException;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.service.ItemServiceImpl;
+import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.service.UserServiceImpl;
+import ru.practicum.shareit.user.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,18 +25,17 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class BookingServiceImpl implements BookingService {
-    BookingRepository bookingRepository;
-    BookingMapper bookingMapper;
-    UserServiceImpl userServiceImpl;
-    ItemServiceImpl itemServiceImpl;
+    private final BookingRepository bookingRepository;
+    private final BookingMapper bookingMapper;
+    private final UserService userService;
+    private final ItemService itemService;
 
     @Override
     @Transactional
     public Booking create(BookingDto bookingDto, long userId) {
-        User booker = userServiceImpl.get(userId);
-        Item item = itemServiceImpl.get(bookingDto.getItemId(), userId);
+        User booker = userService.get(userId);
+        Item item = itemService.get(bookingDto.getItemId(), userId);
 
         boolean isAvailable = item.getAvailable();
         if (!isAvailable) {
@@ -72,7 +69,10 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public Booking update(long ownerId, long bookingId, boolean approved) {
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new ObjectNotFoundException("Бронирование", bookingId));
+                .orElseThrow(() -> {
+                    log.error("Бронирование с ID {} не найдено!", bookingId);
+                    return new ObjectNotFoundException("Бронирование", bookingId);
+                });
 
         boolean isOwnerOfItem = booking.getItem().getOwner().getId() == ownerId;
 
@@ -92,13 +92,16 @@ public class BookingServiceImpl implements BookingService {
         BookingStatus status = approved ? BookingStatus.APPROVED : BookingStatus.REJECTED;
         booking.setStatus(status);
 
-        return bookingRepository.save(booking);
+        return booking;
     }
 
     @Override
     public Booking getById(long bookingId, long userId) {
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new ObjectNotFoundException("Бронирование", bookingId));
+                .orElseThrow(() -> {
+                    log.error("Бронирование с ID {} не найдено!", bookingId);
+                    return new ObjectNotFoundException("Бронирование", bookingId);
+                });
 
         boolean isOwner = booking.getItem().getOwner().getId() == userId;
         boolean isBooker = booking.getBooker().getId() == userId;
@@ -113,7 +116,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<Booking> getBookingsByBookerId(long bookerId, String state) {
-        userServiceImpl.get(bookerId);
+        userService.get(bookerId);
 
         switch (state) {
             case "ALL":
@@ -138,7 +141,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<Booking> getItemBookingsByOwnerId(long ownerId, String state) {
-        userServiceImpl.get(ownerId);
+        userService.get(ownerId);
 
         switch (state) {
             case "ALL":

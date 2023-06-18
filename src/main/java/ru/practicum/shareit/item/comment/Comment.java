@@ -18,22 +18,22 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @NotBlank(groups = Create.class, message = "Текст не должен быть пустым!")
     @Size(groups = Create.class, message = "Текст не должен быть менее 1 символа и более 1000 символов!",
             max = 1000, min = 1)
-    String text;
+    private String text;
     @ManyToOne
     @JoinColumn(name = "item_id")
     @NotNull(groups = Create.class, message = "Необходима вещь, на которую оставляют комментарий!")
-    Item item;
+    private Item item;
     @ManyToOne
     @JoinColumn(name = "author_id")
     @NotNull(message = "Необходим автор комментария!")
-    User author;
-    LocalDateTime created;
+    private User author;
+    @NotNull(message = "Необходимо указать время и дату создания комментария!")
+    private LocalDateTime created;
 }

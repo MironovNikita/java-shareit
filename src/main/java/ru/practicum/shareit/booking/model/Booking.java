@@ -16,23 +16,22 @@ import java.time.LocalDateTime;
 @Table(name = "bookings")
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @Column(name = "start_date")
     @NotNull
-    LocalDateTime start;
+    private LocalDateTime start;
     @Column(name = "end_date")
     @NotNull
-    LocalDateTime end;
+    private LocalDateTime end;
     @ManyToOne
     @JoinColumn(name = "item_id")
-    Item item;
+    private Item item;
     @ManyToOne
     @JoinColumn(name = "booker_id")
-    User booker;
+    private User booker;
     @Enumerated(EnumType.STRING)
-    BookingStatus status;
+    private BookingStatus status;
 }

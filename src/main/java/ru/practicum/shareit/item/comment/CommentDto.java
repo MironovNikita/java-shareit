@@ -17,5 +17,6 @@ public class CommentDto {
     String text;
     @NotNull(message = "Необходимо имя оставляющего комментарий!")
     String authorName;
+    @NotNull(message = "Необходимо указать время и дату создания комментария!")
     LocalDateTime created;
 }

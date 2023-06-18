@@ -1,8 +1,6 @@
 package ru.practicum.shareit.user.controller;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -11,7 +9,7 @@ import ru.practicum.shareit.common.validation.Create;
 import ru.practicum.shareit.common.validation.Update;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.service.UserServiceImpl;
+import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;
 
@@ -19,42 +17,41 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/users")
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
-    UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(@Validated(Create.class) @RequestBody UserDto userDto) {
+    public User create(@Validated(Create.class) @RequestBody UserDto userDto) {
         log.info("Запрос на создание пользователя " + userDto.getName());
-        return userServiceImpl.create(userDto);
+        return userService.create(userDto);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public User updateUser(@PathVariable long id, @Validated(Update.class) @RequestBody UserDto userDto) {
+    public User update(@PathVariable long id, @Validated(Update.class) @RequestBody UserDto userDto) {
         log.info("Запрос на обновление пользователя " + userDto);
-        return userServiceImpl.update(id, userDto);
+        return userService.update(id, userDto);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public User getUser(@PathVariable long id) {
+    public User get(@PathVariable long id) {
         log.info("Запрос на получение пользователя с ID: {}", id);
-        return userServiceImpl.get(id);
+        return userService.get(id);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<User> getAllUsers() {
-        log.info("Запрос на получение списка всех пользователей размером {}", userServiceImpl.getAll().size());
-        return userServiceImpl.getAll();
+    public List<User> getAll() {
+        log.info("Запрос на получение списка всех пользователей размером {}", userService.getAll().size());
+        return userService.getAll();
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteUser(@PathVariable long id) {
+    public void delete(@PathVariable long id) {
         log.info("Запрос на удаление пользователя с ID: {}", id);
-        userServiceImpl.delete(id);
+        userService.delete(id);
     }
 }
