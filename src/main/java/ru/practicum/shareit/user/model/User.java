@@ -1,7 +1,6 @@
 package ru.practicum.shareit.user.model;
 
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.common.validation.Create;
 import ru.practicum.shareit.common.validation.Update;
 

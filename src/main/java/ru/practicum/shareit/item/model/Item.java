@@ -1,7 +1,6 @@
 package ru.practicum.shareit.item.model;
 
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.booking.dto.BookingDatesDto;
 import ru.practicum.shareit.common.validation.Create;
 import ru.practicum.shareit.item.comment.CommentDto;
