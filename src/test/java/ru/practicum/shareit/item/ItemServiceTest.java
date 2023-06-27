@@ -79,6 +79,21 @@ class ItemServiceTest {
     }
 
     @Test
+    @DisplayName("Проверка создания предмета с ID несуществующего запроса")
+    void check_create_shouldThrowObjectNotFoundExceptionIfNonexistentRequestId() {
+        long requestId = 1L;
+        long userId = 1L;
+        User user = TestData.createTestUser(userId);
+        Request request = TestData.createTestRequest(requestId, LocalDateTime.now(), user);
+        ItemDto itemDto = TestData.createTestItemDto(true, requestId);
+
+        when(userService.get(userId)).thenReturn(user);
+        when(requestRepository.findById(requestId)).thenThrow(ObjectNotFoundException.class);
+
+        assertThatThrownBy(() -> itemService.create(userId, itemDto)).isInstanceOf(ObjectNotFoundException.class);
+    }
+
+    @Test
     @DisplayName("Проверка создания предмета у несуществующего пользователя")
     void check_create_shouldThrowObjectNotFoundExceptionIfNonexistentUser() {
         long userId = 9999L;
@@ -198,6 +213,25 @@ class ItemServiceTest {
     }
 
     @Test
+    @DisplayName("Проверка создания комментария пользователем на несуществующую вещь")
+    void check_comment_shouldCreateCommentToNonexistentItem() {
+        long itemId = 1;
+        long userId = 1;
+        User user = TestData.createTestUser(userId);
+        user.setName("Имя автора");
+        Item item = TestData.createTestItem(itemId, true, user);
+        CommentDto commentDto = new CommentDto(null, "Комментарий", null, null);
+        CommentDto createdComment = new CommentDto(1L, "Комментарий", "Имя автора",
+                LocalDateTime.now());
+
+        when(userService.get(userId)).thenReturn(user);
+        when(itemRepository.findById(itemId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> itemService.comment(itemId, userId, commentDto))
+                .isInstanceOf(ObjectNotFoundException.class);
+    }
+
+    @Test
     @DisplayName("Проверка получения вещи по ID")
     void check_get_shouldReturnItemDtoById() {
         long itemId = 1;
@@ -211,6 +245,19 @@ class ItemServiceTest {
         when(commentService.findAllByItemId(anyLong())).thenReturn(Collections.emptyList());
 
         assertThat(itemService.get(itemId, userId)).isEqualTo(itemMapper.transformItemToItemDto(item));
+    }
+
+    @Test
+    @DisplayName("Проверка получения вещи по несуществующему ID")
+    void check_get_shouldThrowObjectNotFoundExceptionIfNonexistentId() {
+        long itemId = 1;
+        long userId = 1;
+        User user = TestData.createTestUser(userId);
+        Item item = TestData.createTestItem(itemId, true, user);
+
+        when(itemRepository.findById(itemId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> itemService.get(itemId, userId)).isInstanceOf(ObjectNotFoundException.class);
     }
 
     @Test
