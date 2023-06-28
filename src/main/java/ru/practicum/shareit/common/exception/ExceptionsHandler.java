@@ -52,11 +52,4 @@ public class ExceptionsHandler {
                 exception.getValue().toString());
         return Map.of("error", String.format("Unknown state: %s", exception.getValue().toString()));
     }
-
-    @ExceptionHandler(UnsupportedStateException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String,String> handleUnsupportedStateException(UnsupportedStateException exception) {
-        log.error("500 - {}", exception.getMessage());
-        return Map.of("error", exception.getMessage());
-    }
 }
