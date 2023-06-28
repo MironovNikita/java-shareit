@@ -12,7 +12,8 @@ import ru.practicum.shareit.item.comment.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 
 import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Slf4j
@@ -60,9 +61,9 @@ public class ItemController {
     @ResponseStatus(HttpStatus.OK)
     public List<ItemDto> getByUserId(@RequestHeader(HEADER_USER_ID) long userId,
                                     @RequestParam(value = "from", required = false)
-                                    @Min(value = 0, message = "Минимальное значение индекса: 0") Integer from,
+                                    @PositiveOrZero(message = "Минимальное значение индекса: 0") Integer from,
                                     @RequestParam(value = "size", required = false)
-                                    @Min(value = 1, message = "Минимальное количество элементов: 1")
+                                    @Positive(message = "Минимальное количество элементов: 1")
                                     @Max(value = 20, message = "Максимальное количество элементов: 20") Integer size) {
         log.info("Запрос на получение предметов пользователя по ID: {}", userId);
         return itemService.getByUserId(userId, Pagination.splitByPages(from, size));
@@ -72,9 +73,9 @@ public class ItemController {
     @ResponseStatus(HttpStatus.OK)
     public List<ItemDto> getBySearchText(@RequestParam(required = false) String text,
                                     @RequestParam(value = "from", required = false)
-                                    @Min(value = 0, message = "Минимальное значение индекса: 0") Integer from,
+                                    @PositiveOrZero(message = "Минимальное значение индекса: 0") Integer from,
                                     @RequestParam(value = "size", required = false)
-                                    @Min(value = 1, message = "Минимальное количество элементов: 1")
+                                    @Positive(message = "Минимальное количество элементов: 1")
                                     @Max(value = 20, message = "Максимальное количество элементов: 20") Integer size) {
         log.info("Запрос на получение предметов по поисковому запросу: {}", text);
         return itemService.getBySearchText(text, Pagination.splitByPages(from, size));

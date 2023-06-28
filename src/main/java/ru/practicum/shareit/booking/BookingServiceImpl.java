@@ -9,7 +9,6 @@ import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.common.exception.BookingException;
 import ru.practicum.shareit.common.exception.ObjectNotFoundException;
 import ru.practicum.shareit.common.exception.SelfItemBookingException;
-import ru.practicum.shareit.common.exception.UnsupportedStateException;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.item.ItemService;
@@ -114,56 +113,52 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Booking> getBookingsByBookerId(long bookerId, String state, Pageable pageable) {
+    public List<Booking> getBookingsByBookerId(long bookerId, BookingSearchState state, Pageable pageable) {
         userService.get(bookerId);
 
         switch (state) {
-            case "ALL":
-                return bookingRepository.findAllByBookerIdOrderByStartDesc(bookerId, pageable);
-            case "CURRENT":
+            case CURRENT:
                 return bookingRepository.findAllByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(
                         bookerId, LocalDateTime.now(), LocalDateTime.now(), pageable);
-            case "PAST":
+            case PAST:
                 return bookingRepository.findAllByBookerIdAndEndBeforeOrderByStartDesc(bookerId, LocalDateTime.now(),
                         pageable);
-            case "FUTURE":
+            case FUTURE:
                 return bookingRepository.findAllByBookerIdAndStartAfterOrderByStartDesc(bookerId, LocalDateTime.now(),
                         pageable);
-            case "WAITING":
+            case WAITING:
                 return bookingRepository.findAllByBookerIdAndStatusOrderByStartDesc(bookerId,
                         BookingStatus.WAITING, pageable);
-            case "REJECTED":
+            case REJECTED:
                 return bookingRepository.findAllByBookerIdAndStatusOrderByStartDesc(bookerId,
                         BookingStatus.REJECTED, pageable);
             default:
-                throw new UnsupportedStateException();
+                return bookingRepository.findAllByBookerIdOrderByStartDesc(bookerId, pageable);
         }
     }
 
     @Override
-    public List<Booking> getItemBookingsByOwnerId(long ownerId, String state, Pageable pageable) {
+    public List<Booking> getItemBookingsByOwnerId(long ownerId, BookingSearchState state, Pageable pageable) {
         userService.get(ownerId);
 
         switch (state) {
-            case "ALL":
-                return bookingRepository.findAllByItemOwnerIdOrderByStartDesc(ownerId, pageable);
-            case "CURRENT":
+            case CURRENT:
                 return bookingRepository.findAllByItemOwnerIdAndStartBeforeAndEndAfterOrderByStartDesc(
                         ownerId, LocalDateTime.now(), LocalDateTime.now(), pageable);
-            case "PAST":
+            case PAST:
                 return bookingRepository.findAllByItemOwnerIdAndEndBeforeOrderByStartDesc(ownerId, LocalDateTime.now(),
                         pageable);
-            case "FUTURE":
+            case FUTURE:
                 return bookingRepository.findAllByItemOwnerIdAndStartAfterOrderByStartDesc(
                         ownerId, LocalDateTime.now(), pageable);
-            case "WAITING":
+            case WAITING:
                 return bookingRepository.findAllByItemOwnerIdAndStatusOrderByStartDesc(ownerId,
                         BookingStatus.WAITING, pageable);
-            case "REJECTED":
+            case REJECTED:
                 return bookingRepository.findAllByItemOwnerIdAndStatusOrderByStartDesc(ownerId,
                         BookingStatus.REJECTED, pageable);
             default:
-                throw new UnsupportedStateException();
+                return bookingRepository.findAllByItemOwnerIdOrderByStartDesc(ownerId, pageable);
         }
     }
 }

@@ -1,6 +1,5 @@
 package ru.practicum.shareit.booking;
 
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.convert.ConversionFailedException;
 import ru.practicum.shareit.TestData;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.common.exception.BookingException;
@@ -47,7 +47,6 @@ public class BookingServiceTest {
     @InjectMocks
     private BookingServiceImpl bookingService;
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода создания бронирования")
     void check_create_shouldCreateBooking() {
@@ -69,7 +68,6 @@ public class BookingServiceTest {
         assertThat(booking.getItem()).isEqualTo(item);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода создания бронирования при некорректных датах бронирования")
     void check_create_shouldThrowBookingExceptionIfBookingDatesAreIncorrect() {
@@ -87,7 +85,6 @@ public class BookingServiceTest {
         assertThatThrownBy(() -> bookingService.create(bookingDto, userId)).isInstanceOf(BookingException.class);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода создания бронирования своей же вещи")
     void check_create_shouldThrowSelfItemBookingExceptionIfUserIdIsEqualToOwnerId() {
@@ -106,7 +103,6 @@ public class BookingServiceTest {
                 .isInstanceOf(SelfItemBookingException.class);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода создания бронирования при недоступности этой вещи")
     void check_create_shouldThrowBookingExceptionIfItemIsUnavailable() {
@@ -125,7 +121,6 @@ public class BookingServiceTest {
                 .isInstanceOf(BookingException.class);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода создания бронирования при несуществующей вещи")
     void check_create_shouldThrowObjectNotFoundExceptionIfNonexistentItemId() {
@@ -141,7 +136,6 @@ public class BookingServiceTest {
                 .isInstanceOf(ObjectNotFoundException.class);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода создания бронирования при несуществующем пользователе")
     void check_create_shouldThrowObjectNotFoundExceptionIfNonexistentUserId() {
@@ -157,7 +151,6 @@ public class BookingServiceTest {
                 .isInstanceOf(ObjectNotFoundException.class);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода обновления бронирования до утверждения")
     void check_update_shouldUpdateBookingStatusToApproved() {
@@ -179,7 +172,6 @@ public class BookingServiceTest {
         assertThat(booking.getStatus()).isEqualTo(BookingStatus.APPROVED);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода обновления бронирования, если оно уже было утверждено")
     void check_update_shouldThrowBookingExceptionIfUpdatingAlreadyApprovedStatus() {
@@ -200,7 +192,6 @@ public class BookingServiceTest {
                 .isInstanceOf(BookingException.class);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода обновления бронирования, если пользователь не собственник")
     void check_update_shouldThrowObjectNotFoundExceptionIfUserIsNotOwnerOfItem() {
@@ -221,7 +212,6 @@ public class BookingServiceTest {
                 .isInstanceOf(ObjectNotFoundException.class);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода обновления несуществующего бронирования")
     void check_update_shouldThrowObjectNotFoundExceptionIfNonexistentBooking() {
@@ -234,7 +224,6 @@ public class BookingServiceTest {
                 .isInstanceOf(ObjectNotFoundException.class);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения бронирования по ID")
     void check_getById_shouldReturnBookingById() {
@@ -254,7 +243,6 @@ public class BookingServiceTest {
         assertThat(bookingService.getById(bookingId, userId)).isEqualTo(booking);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения бронирования по ID, если пользователь ни собственник, ни бронирующий")
     void check_getById_ThrowObjectNotFoundExceptionIfUserIsNotOwnerOrBooker() {
@@ -276,7 +264,6 @@ public class BookingServiceTest {
                 .isInstanceOf(ObjectNotFoundException.class);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения несуществующего бронирования по ID")
     void check_getById_ThrowObjectNotFoundExceptionIfNonexistentBooking() {
@@ -289,127 +276,98 @@ public class BookingServiceTest {
                 .isInstanceOf(ObjectNotFoundException.class);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения бронирований по ID бронирующего с условием ALL")
     void check_getBookingsByBookerId_shouldUseMethod_findAllByBookerIdOrderByStartDesc() {
-        bookingService.getBookingsByBookerId(1L, "ALL", null);
+        bookingService.getBookingsByBookerId(1L, BookingSearchState.ALL, null);
         verify(bookingRepository, times(1)).findAllByBookerIdOrderByStartDesc(anyLong(), any());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения бронирований по ID бронирующего с условием CURRENT")
     void check_getBookingsByBookerId_shouldUseMethod_findAllByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc() {
-        bookingService.getBookingsByBookerId(1L, "CURRENT", null);
+        bookingService.getBookingsByBookerId(1L, BookingSearchState.CURRENT, null);
         verify(bookingRepository, times(1))
                 .findAllByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(anyLong(), any(), any(), any());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения бронирований по ID бронирующего с условием PAST")
     void check_getBookingsByBookerId_shouldUseMethod_findAllByBookerIdAndEndBeforeOrderByStartDesc() {
-        bookingService.getBookingsByBookerId(1L, "PAST", null);
+        bookingService.getBookingsByBookerId(1L, BookingSearchState.PAST, null);
         verify(bookingRepository, times(1))
                 .findAllByBookerIdAndEndBeforeOrderByStartDesc(anyLong(), any(), any());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения бронирований по ID бронирующего с условием FUTURE")
     void check_getBookingsByBookerId_shouldUseMethod_findAllByBookerIdAndStartAfterOrderByStartDesc() {
-        bookingService.getBookingsByBookerId(1L, "FUTURE", null);
+        bookingService.getBookingsByBookerId(1L, BookingSearchState.FUTURE, null);
         verify(bookingRepository, times(1))
                 .findAllByBookerIdAndStartAfterOrderByStartDesc(anyLong(), any(), any());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения бронирований по ID бронирующего с условием WAITING")
     void check_getBookingsByBookerId_shouldUseMethod_findAllByBookerIdAndStatusOrderByStartDesc_Waiting() {
-        bookingService.getBookingsByBookerId(1L, "WAITING", null);
+        bookingService.getBookingsByBookerId(1L, BookingSearchState.WAITING, null);
         verify(bookingRepository, times(1))
                 .findAllByBookerIdAndStatusOrderByStartDesc(anyLong(), any(), any());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения бронирований по ID бронирующего с условием REJECTED")
     void check_getBookingsByBookerId_shouldUseMethod_findAllByBookerIdAndStatusOrderByStartDesc_Rejected() {
-        bookingService.getBookingsByBookerId(1L, "REJECTED", null);
+        bookingService.getBookingsByBookerId(1L, BookingSearchState.REJECTED, null);
         verify(bookingRepository, times(1))
                 .findAllByBookerIdAndStatusOrderByStartDesc(anyLong(), any(), any());
     }
 
-    @SneakyThrows
-    @Test
-    @DisplayName("Проверка метода получения бронирований с выбросом исключения из-за несуществующего условия")
-    void check_getBookingsByBookerId_shouldThrowUnsupportedStateException() {
-        assertThatThrownBy(() -> bookingService.getBookingsByBookerId(1, "SMTH", null))
-                .isInstanceOf(UnsupportedStateException.class);
-    }
-
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения бронирований собственником с условием ALL")
     void check_getItemBookingsByOwnerId_shouldUseMethod_findAllByItemOwnerIdOrderByStartDesc() {
-        bookingService.getItemBookingsByOwnerId(1L, "ALL", null);
+        bookingService.getItemBookingsByOwnerId(1L, BookingSearchState.ALL, null);
         verify(bookingRepository, times(1))
                 .findAllByItemOwnerIdOrderByStartDesc(anyLong(), any());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения бронирований собственником с условием CURRENT")
     void check_getItemBookingsByOwnerId_shouldUseMethod_findAllByItemOwnerIdAndStartBeforeAndEndAfterOrderByStartDesc() {
-        bookingService.getItemBookingsByOwnerId(1L, "CURRENT", null);
+        bookingService.getItemBookingsByOwnerId(1L, BookingSearchState.CURRENT, null);
         verify(bookingRepository, times(1))
                 .findAllByItemOwnerIdAndStartBeforeAndEndAfterOrderByStartDesc(anyLong(), any(), any(), any());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения бронирований собственником с условием PAST")
     void check_getItemBookingsByOwnerId_shouldUseMethod_findAllByItemOwnerIdAndEndBeforeOrderByStartDesc() {
-        bookingService.getItemBookingsByOwnerId(1L, "PAST", null);
+        bookingService.getItemBookingsByOwnerId(1L, BookingSearchState.PAST, null);
         verify(bookingRepository, times(1))
                 .findAllByItemOwnerIdAndEndBeforeOrderByStartDesc(anyLong(), any(), any());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения бронирований собственником с условием FUTURE")
     void check_getItemBookingsByOwnerId_shouldUseMethod_findAllByItemOwnerIdAndStartAfterOrderByStartDesc() {
-        bookingService.getItemBookingsByOwnerId(1L, "FUTURE", null);
+        bookingService.getItemBookingsByOwnerId(1L, BookingSearchState.FUTURE, null);
         verify(bookingRepository, times(1))
                 .findAllByItemOwnerIdAndStartAfterOrderByStartDesc(anyLong(), any(), any());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения бронирований собственником с условием WAITING")
     void check_getItemBookingsByOwnerId_shouldUseMethod_findAllByItemOwnerIdAndStatusOrderByStartDesc_Waiting() {
-        bookingService.getItemBookingsByOwnerId(1L, "WAITING", null);
+        bookingService.getItemBookingsByOwnerId(1L, BookingSearchState.WAITING, null);
         verify(bookingRepository, times(1))
                 .findAllByItemOwnerIdAndStatusOrderByStartDesc(anyLong(), any(), any());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения бронирований собственником с условием WAITING")
     void check_getItemBookingsByOwnerId_shouldUseMethod_findAllByItemOwnerIdAndStatusOrderByStartDesc_Rejected() {
-        bookingService.getItemBookingsByOwnerId(1L, "REJECTED", null);
+        bookingService.getItemBookingsByOwnerId(1L, BookingSearchState.REJECTED, null);
         verify(bookingRepository, times(1))
                 .findAllByItemOwnerIdAndStatusOrderByStartDesc(anyLong(), any(), any());
-    }
-
-    @SneakyThrows
-    @Test
-    @DisplayName("Проверка метода получения бронирований собственником с выбросом исключения из-за несуществующего" +
-            "условия")
-    void check_getItemBookingsByOwnerId_shouldThrowUnsupportedStateException() {
-        assertThatThrownBy(() -> bookingService.getItemBookingsByOwnerId(1, "SMTH", null))
-                .isInstanceOf(UnsupportedStateException.class);
     }
 }

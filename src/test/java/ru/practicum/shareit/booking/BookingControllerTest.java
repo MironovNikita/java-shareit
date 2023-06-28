@@ -1,7 +1,6 @@
 package ru.practicum.shareit.booking;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -38,10 +37,9 @@ public class BookingControllerTest {
     @InjectMocks
     private BookingController bookingController;
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода создания бронирования")
-    void check_create_shouldCreateBooking() {
+    void check_create_shouldCreateBooking() throws Exception {
         long bookingId = 1L;
         long userId = 1L;
 
@@ -67,10 +65,9 @@ public class BookingControllerTest {
         verify(bookingService, times(1)).create(correctBookingDto, userId);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода создания бронирования при недоступной вещи")
-    void check_create_shouldNotCreateBookingIfItemIsUnavailable() {
+    void check_create_shouldNotCreateBookingIfItemIsUnavailable() throws Exception {
         long itemId = 1L;
         long bookerId = 2L;
         long userId = 1L;
@@ -91,10 +88,9 @@ public class BookingControllerTest {
         verify(bookingService, times(1)).create(correctBookingDto, bookerId);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода создания бронирования при бронировании собственной вещи")
-    void check_create_shouldNotCreateBookingIfUserIdIsEqualToBookerId() {
+    void check_create_shouldNotCreateBookingIfUserIdIsEqualToBookerId() throws Exception {
         long itemId = 1L;
         long bookerId = 1L;
         long userId = 1L;
@@ -114,10 +110,9 @@ public class BookingControllerTest {
         verify(bookingService, times(1)).create(correctBookingDto, bookerId);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода обновления бронирования")
-    void check_update_shouldUpdateBooking() {
+    void check_update_shouldUpdateBooking() throws Exception {
         long bookingId = 1L;
         long bookerId = 1L;
 
@@ -136,10 +131,9 @@ public class BookingControllerTest {
         verify(bookingService, times(1)).update(anyLong(), anyLong(), anyBoolean());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения бронирования по ID")
-    void check_getById_shouldGetBookingById() {
+    void check_getById_shouldGetBookingById() throws Exception {
         long bookingId = 1L;
         long bookerId = 1L;
 
@@ -155,10 +149,9 @@ public class BookingControllerTest {
         verify(bookingService, times(1)).getById(anyLong(), anyLong());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения бронирований бронирующего пользователя")
-    void check_getBookingsByBookerId_shouldReturnBookingListOfBookerByHisId() {
+    void check_getBookingsByBookerId_shouldReturnBookingListOfBookerByHisId() throws Exception {
         long bookerId = 1L;
         long bookingId1 = 1L;
         long bookingId2 = 2L;
@@ -178,10 +171,9 @@ public class BookingControllerTest {
         verify(bookingService, times(1)).getBookingsByBookerId(anyLong(), any(), any());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения бронирований собственника вещей")
-    void check_getItemBookingsByOwnerId_shouldReturnBookingListOfOwnerByHisId() {
+    void check_getItemBookingsByOwnerId_shouldReturnBookingListOfOwnerByHisId() throws Exception {
         long ownerId = 1L;
         long bookingId1 = 1L;
         long bookingId2 = 2L;

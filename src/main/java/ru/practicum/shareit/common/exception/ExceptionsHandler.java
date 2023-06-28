@@ -1,6 +1,7 @@
 package ru.practicum.shareit.common.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -43,17 +44,19 @@ public class ExceptionsHandler {
         return String.format("400 - %s", exception.getMessage());
     }
 
+    @ExceptionHandler(ConversionFailedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleConversionFailedException(final ConversionFailedException exception) {
+        String exceptionMessage = exception.getLocalizedMessage();
+        log.error("400 - Ошибка при обработке запроса: {} Unknown state: {}", exceptionMessage,
+                exception.getValue().toString());
+        return Map.of("error", String.format("Unknown state: %s", exception.getValue().toString()));
+    }
+
     @ExceptionHandler(UnsupportedStateException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Map<String,String> handleUnsupportedStateException(UnsupportedStateException exception) {
         log.error("500 - {}", exception.getMessage());
         return Map.of("error", exception.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleInternalServerError(Exception exception) {
-        log.error("500 - {}", exception.getMessage());
-        return String.format("500 - %s", exception.getMessage());
     }
 }

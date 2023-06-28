@@ -1,7 +1,6 @@
 package ru.practicum.shareit.item;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -48,10 +47,9 @@ class ItemControllerTest {
     @InjectMocks
     private ItemController itemController;
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода создания вещи")
-    void check_create_shouldCreateItemDto() {
+    void check_create_shouldCreateItemDto() throws Exception {
         User user = TestData.createTestUser(1L);
         Item item = TestData.createTestItem(1L, true, user);
         ItemDto someItem = itemMapper.transformItemToItemDto(item);
@@ -68,10 +66,9 @@ class ItemControllerTest {
         verify(itemService, times(1)).create(1L, createItemDto);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода комментирования вещи")
-    void check_comment_shouldReturnCreatedComment() {
+    void check_comment_shouldReturnCreatedComment() throws Exception {
         long itemId = 1L;
         long userId = 1L;
         CommentDto commentDto = new CommentDto(null, "Комментарий", null, null);
@@ -88,10 +85,9 @@ class ItemControllerTest {
         verify(itemService, times(1)).comment(userId, itemId, commentDto);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода обновления предмета")
-    void check_update_shouldReturnUpdateItemDto() {
+    void check_update_shouldReturnUpdateItemDto() throws Exception {
         long itemId = 1L;
         long userId = 1L;
         User user = TestData.createTestUser(userId);
@@ -108,10 +104,9 @@ class ItemControllerTest {
         verify(itemService, times(1)).update(itemId, userId, updatedDto);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода обновления предмета, когда предмета с таким ID нет")
-    void check_update_shouldThrowObjectNotFoundExceptionIfNonexistentId() {
+    void check_update_shouldThrowObjectNotFoundExceptionIfNonexistentId() throws Exception {
         long itemId = 1L;
         long userId = 1L;
         User user = TestData.createTestUser(userId);
@@ -127,10 +122,9 @@ class ItemControllerTest {
         verify(itemService, times(1)).update(itemId, userId, updatedDto);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения предмета по ID")
-    void check_get_shouldReturnItemDtoById() {
+    void check_get_shouldReturnItemDtoById() throws Exception {
         long itemId = 1L;
         long userId = 1L;
         User user = TestData.createTestUser(userId);
@@ -144,10 +138,9 @@ class ItemControllerTest {
         verify(itemService, times(1)).get(itemId, userId);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения предмета по несуществующему ID")
-    void check_get_shouldThrowObjectNotFoundExceptionIfNonexistentId() {
+    void check_get_shouldThrowObjectNotFoundExceptionIfNonexistentId() throws Exception {
         long itemId = 1L;
         long userId = 1L;
         User user = TestData.createTestUser(userId);
@@ -160,10 +153,9 @@ class ItemControllerTest {
         verify(itemService, times(1)).get(itemId, userId);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения списка предметов по ID пользователя")
-    void check_getByUserId_shouldReturnItemDtoListByUserId() {
+    void check_getByUserId_shouldReturnItemDtoListByUserId() throws Exception {
         long userId = 1L;
         User user = TestData.createTestUser(userId);
         List<ItemDto> userItems = Stream.of(
@@ -180,10 +172,9 @@ class ItemControllerTest {
         verify(itemService, times(1)).getByUserId(userId, null);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения списка предметов по несуществующему ID пользователя")
-    void check_getByUserId_shouldThrowObjectNotFoundExceptionIfNonexistentId() {
+    void check_getByUserId_shouldThrowObjectNotFoundExceptionIfNonexistentId() throws Exception {
         long userId = 1L;
 
         when(itemService.getByUserId(anyLong(), any())).thenThrow(new ObjectNotFoundException("Пользователь", userId));
@@ -193,18 +184,16 @@ class ItemControllerTest {
         verify(itemService, times(1)).getByUserId(anyLong(), any());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения списка предметов по некорректному ID пользователя")
-    void check_getByUserId_shouldReturnInternalServerErrorStatus() {
+    void check_getByUserId_shouldReturnInternalServerErrorStatus() throws Exception {
         mockMvc.perform(get("/items").header(HEADER_USER_ID, "text25"))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isBadRequest());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода поиска предметов по тексту")
-    void check_getBySearchText_shouldReturnItemDtoListBySearchText() {
+    void check_getBySearchText_shouldReturnItemDtoListBySearchText() throws Exception {
         long userId = 1L;
         User user = TestData.createTestUser(userId);
         List<ItemDto> searchedItems = Stream.of(
@@ -221,10 +210,9 @@ class ItemControllerTest {
         verify(itemService, times(1)).getBySearchText(anyString(), any());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода поиска предметов по пустому тексту")
-    void check_getBySearchText_shouldReturnEmptyItemDtoListByEmptySearchText() {
+    void check_getBySearchText_shouldReturnEmptyItemDtoListByEmptySearchText() throws Exception {
         when(itemService.getBySearchText(anyString(), any())).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/items/search").queryParam("text", ""))
@@ -233,10 +221,9 @@ class ItemControllerTest {
         verify(itemService, times(1)).getBySearchText(anyString(), any());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода удаления вещи")
-    void check_delete_shouldDeleteItem() {
+    void check_delete_shouldDeleteItem() throws Exception {
         long itemId = 1L;
         long userId = 1L;
         User user = TestData.createTestUser(userId);
@@ -246,10 +233,9 @@ class ItemControllerTest {
         verify(itemService, times(1)).delete(itemId);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода удаления вещи по несуществующему ID")
-    void check_delete_shouldThrowObjectNotFoundExceptionIfNonexistentId() {
+    void check_delete_shouldThrowObjectNotFoundExceptionIfNonexistentId() throws Exception {
         long itemId = 9999L;
 
         doThrow(new ObjectNotFoundException("Предмет", itemId)).when(itemService).delete(itemId);

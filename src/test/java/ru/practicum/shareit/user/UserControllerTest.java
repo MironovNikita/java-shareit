@@ -1,7 +1,6 @@
 package ru.practicum.shareit.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,9 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.TestData;
 import ru.practicum.shareit.common.exception.ObjectNotFoundException;
-import ru.practicum.shareit.user.User;
-import ru.practicum.shareit.user.UserController;
-import ru.practicum.shareit.user.UserService;
 import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.Collections;
@@ -42,10 +38,9 @@ public class UserControllerTest {
     @InjectMocks
     private UserController userController;
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода на создание пользователя")
-    void check_create_shouldCreateUser() {
+    void check_create_shouldCreateUser() throws Exception {
         User user = TestData.createTestUser(1);
         UserDto userDto = new UserDto(user.getName(), user.getEmail());
 
@@ -58,10 +53,9 @@ public class UserControllerTest {
         verify(userService, times(1)).create(userDto);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода на обновление пользователя")
-    void check_update_shouldUpdateUser() {
+    void check_update_shouldUpdateUser() throws Exception {
         long id = 1L;
         User user = TestData.createTestUser(id);
         UserDto userDto = new UserDto(user.getName(), user.getEmail());
@@ -75,10 +69,9 @@ public class UserControllerTest {
         verify(userService, times(1)).update(id, userDto);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода на обновление несуществующего пользователя")
-    void check_update_shouldReturnNotFoundStatusIfUpdatingNonexistentUser() {
+    void check_update_shouldReturnNotFoundStatusIfUpdatingNonexistentUser() throws Exception {
         long id = 1L;
         User user = TestData.createTestUser(id);
         UserDto userDto = new UserDto(user.getName(), user.getEmail());
@@ -91,10 +84,9 @@ public class UserControllerTest {
         verify(userService, times(1)).update(id, userDto);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода на получение пользователя по ID")
-    void check_get_shouldReturnUserById() {
+    void check_get_shouldReturnUserById() throws Exception {
         long id = 1L;
         User user = TestData.createTestUser(id);
 
@@ -107,10 +99,9 @@ public class UserControllerTest {
         verify(userService, times(1)).get(id);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода на получение пользователя по несуществующему ID")
-    void check_get_shouldReturnObjectNotFoundExceptionStatusIfNonexistentId() {
+    void check_get_shouldReturnObjectNotFoundExceptionStatusIfNonexistentId() throws Exception {
         long id = 9999L;
 
         when(userService.get(id)).thenThrow(new ObjectNotFoundException("Пользователь", id));
@@ -119,17 +110,15 @@ public class UserControllerTest {
         verify(userService, times(1)).get(id);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода на получение пользователя по некорректному ID")
-    void check_get_shouldReturnInternalServerErrorStatusIfIncorrectId() {
-        mockMvc.perform(get("/users/sometext75")).andExpect(status().isInternalServerError());
+    void check_get_shouldReturnInternalServerErrorStatusIfIncorrectId() throws Exception {
+        mockMvc.perform(get("/users/sometext75")).andExpect(status().isBadRequest());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода на получение списка всех пользователей")
-    void check_getAll_shouldReturnAllUserList() {
+    void check_getAll_shouldReturnAllUserList() throws Exception {
         List<User> expectedList = List.of(TestData.createTestUser(1L),
                                           TestData.createTestUser(2L),
                                           TestData.createTestUser(3L));
@@ -141,10 +130,9 @@ public class UserControllerTest {
         verify(userService, times(2)).getAll();
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода на получение списка всех пользователей, когда список пуст")
-    void check_getAll_shouldReturnEmptyUserList() {
+    void check_getAll_shouldReturnEmptyUserList() throws Exception {
         when(userService.getAll()).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/users")).andExpect(status().isOk())
@@ -152,20 +140,18 @@ public class UserControllerTest {
         verify(userService, times(2)).getAll();
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода на удаление пользователя по ID")
-    void check_delete_shouldDeleteUserById() {
+    void check_delete_shouldDeleteUserById() throws Exception {
         long id = 1L;
 
         mockMvc.perform(delete(String.format("/users/%d", id))).andExpect(status().isOk());
         verify(userService, times(1)).delete(id);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода на удаление пользователя по несуществующему ID")
-    void check_delete_shouldDeleteUserByNonexistentId() {
+    void check_delete_shouldDeleteUserByNonexistentId() throws Exception {
         long id = 9999L;
 
         doThrow(new ObjectNotFoundException("Пользователь", id)).when(userService).delete(id);

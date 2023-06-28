@@ -1,7 +1,6 @@
 package ru.practicum.shareit.request;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -35,10 +34,9 @@ public class RequestControllerTest {
     @InjectMocks
     private RequestController requestController;
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода создания запроса")
-    void check_create_shouldReturnCreatedRequest() {
+    void check_create_shouldReturnCreatedRequest() throws Exception {
         long userId = 1L;
         RequestDto requestDto = RequestDto.builder()
                 .description("Описание запроса")
@@ -56,10 +54,9 @@ public class RequestControllerTest {
         verify(requestService, times(1)).create(userId, requestDto);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения собственных запросов")
-    void check_getOwnRequests_shouldReturnOwnUserRequests() {
+    void check_getOwnRequests_shouldReturnOwnUserRequests() throws Exception {
         long userId = 1L;
         List<RequestDto> expectedList = List.of(
                 TestData.createTestRequestDto(1L),
@@ -74,10 +71,9 @@ public class RequestControllerTest {
         verify(requestService, times(1)).getOwnRequests(userId);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения запросов других пользователей")
-    void check_getOtherUsersRequests_shouldReturnOtherUsersRequests() {
+    void check_getOtherUsersRequests_shouldReturnOtherUsersRequests() throws Exception {
         long userId = 1L;
         List<RequestDto> expectedList = List.of(
                 TestData.createTestRequestDto(1L),
@@ -92,10 +88,9 @@ public class RequestControllerTest {
         verify(requestService, times(1)).getOtherUsersRequests(anyLong(), any());
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения запроса")
-    void check_get_shouldReturnRequestById() {
+    void check_get_shouldReturnRequestById() throws Exception {
         long userId = 1L;
         long requestId = 1L;
         RequestDto requestDto = TestData.createTestRequestDto(requestId);
@@ -108,10 +103,9 @@ public class RequestControllerTest {
         verify(requestService, times(1)).get(userId, requestId);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода получения запроса по несуществующему ID")
-    void check_get_shouldThrowObjectNotFoundExceptionIfNonexistentRequestId() {
+    void check_get_shouldThrowObjectNotFoundExceptionIfNonexistentRequestId() throws Exception {
         long userId = 1L;
         long requestId = 1L;
 

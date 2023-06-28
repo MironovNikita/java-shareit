@@ -10,7 +10,8 @@ import ru.practicum.shareit.common.validation.Create;
 import ru.practicum.shareit.request.dto.RequestDto;
 
 import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Slf4j
@@ -42,9 +43,9 @@ public class RequestController {
     public List<RequestDto> getOtherUsersRequests(
             @RequestHeader(HEADER_USER_ID) long userId,
             @RequestParam(value = "from", required = false)
-            @Min(value = 0, message = "Минимальное значение индекса: 0") Integer from,
+            @PositiveOrZero(message = "Минимальное значение индекса: 0") Integer from,
             @RequestParam(value = "size", required = false)
-            @Min(value = 1, message = "Минимальное количество элементов: 1")
+            @Positive(message = "Минимальное количество элементов: 1")
             @Max(value = 20, message = "Максимальное количество элементов: 20") Integer size) {
         log.info("Запрос пользователя с id {} на получение запросов других пользователей", userId);
         return requestService.getOtherUsersRequests(userId, Pagination.splitByPages(from, size));

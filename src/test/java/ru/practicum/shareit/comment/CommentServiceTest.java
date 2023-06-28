@@ -1,6 +1,5 @@
 package ru.practicum.shareit.comment;
 
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +30,6 @@ public class CommentServiceTest {
     @InjectMocks
     private CommentServiceImpl commentService;
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода создания комментария")
     void check_createComment_shouldCreateComment() {
@@ -46,7 +44,6 @@ public class CommentServiceTest {
         assertThat(checkedComment).isEqualTo(comment);
     }
 
-    @SneakyThrows
     @Test
     @DisplayName("Проверка метода поиска всех комментариев по ID вещи")
     void check_findAllByItemId_shouldReturnCommentListOfItemWithSomeId() {

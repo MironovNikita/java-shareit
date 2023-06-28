@@ -10,7 +10,8 @@ import ru.practicum.shareit.common.pagination.Pagination;
 import ru.practicum.shareit.common.validation.Create;
 
 import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Slf4j
@@ -49,27 +50,27 @@ public class BookingController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Booking> getBookingsByBookerId(@RequestParam(defaultValue = "ALL") String state,
+    public List<Booking> getBookingsByBookerId(@RequestParam(name = "state", defaultValue = "ALL") BookingSearchState searchState,
                                   @RequestHeader(HEADER_USER_ID) long bookerId,
                                   @RequestParam(value = "from", required = false)
-                                  @Min(value = 0, message = "Минимальное значение индекса: 0") Integer from,
+                                  @PositiveOrZero(message = "Минимальное значение индекса: 0") Integer from,
                                   @RequestParam(value = "size", required = false)
-                                  @Min(value = 1, message = "Минимальное количество элементов: 1")
+                                  @Positive(message = "Минимальное количество элементов: 1")
                                   @Max(value = 20, message = "Максимальное количество элементов: 20") Integer size) {
         log.info("Запрос на получение списка всех бронирований пользователя по ID: {}", bookerId);
-        return bookingService.getBookingsByBookerId(bookerId, state, Pagination.splitByPages(from, size));
+        return bookingService.getBookingsByBookerId(bookerId, searchState, Pagination.splitByPages(from, size));
     }
 
     @GetMapping("/owner")
     @ResponseStatus(HttpStatus.OK)
-    public List<Booking> getItemBookingsByOwnerId(@RequestParam(defaultValue = "ALL") String state,
+    public List<Booking> getItemBookingsByOwnerId(@RequestParam(name = "state", defaultValue = "ALL") BookingSearchState searchState,
                                   @RequestHeader(HEADER_USER_ID) long ownerId,
                                   @RequestParam(value = "from", required = false)
-                                  @Min(value = 0, message = "Минимальное значение индекса: 0") Integer from,
+                                  @PositiveOrZero(message = "Минимальное значение индекса: 0") Integer from,
                                   @RequestParam(value = "size", required = false)
-                                  @Min(value = 1, message = "Минимальное количество элементов: 1")
+                                  @Positive(message = "Минимальное количество элементов: 1")
                                   @Max(value = 20, message = "Максимальное количество элементов: 20") Integer size) {
         log.info("Запрос на получение списка бронирований для всех вещей текущего пользователя с ID: {}", ownerId);
-        return bookingService.getItemBookingsByOwnerId(ownerId, state, Pagination.splitByPages(from, size));
+        return bookingService.getItemBookingsByOwnerId(ownerId, searchState, Pagination.splitByPages(from, size));
     }
 }
