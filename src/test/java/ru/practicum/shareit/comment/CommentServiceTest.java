@@ -32,7 +32,7 @@ public class CommentServiceTest {
 
     @Test
     @DisplayName("Проверка метода создания комментария")
-    void check_createComment_shouldCreateComment() {
+    void checkCreateCommentShouldCreateComment() {
         User user = TestData.createTestUser(1L);
         Item item = TestData.createTestItem(1L, true, user);
         Comment comment = new Comment(1L, "Комментарий", item, user, LocalDateTime.now());
@@ -46,7 +46,7 @@ public class CommentServiceTest {
 
     @Test
     @DisplayName("Проверка метода поиска всех комментариев по ID вещи")
-    void check_findAllByItemId_shouldReturnCommentListOfItemWithSomeId() {
+    void checkFindAllByItemIdShouldReturnCommentListOfItemWithSomeId() {
         User user1 = TestData.createTestUser(1L);
         User user2 = TestData.createTestUser(2L);
         user2.setEmail("test2@test.ru");

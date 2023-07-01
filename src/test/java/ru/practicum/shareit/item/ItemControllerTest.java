@@ -49,7 +49,7 @@ class ItemControllerTest {
 
     @Test
     @DisplayName("Проверка метода создания вещи")
-    void check_create_shouldCreateItemDto() throws Exception {
+    void checkCreateShouldCreateItemDto() throws Exception {
         User user = TestData.createTestUser(1L);
         Item item = TestData.createTestItem(1L, true, user);
         ItemDto someItem = itemMapper.transformItemToItemDto(item);
@@ -68,7 +68,7 @@ class ItemControllerTest {
 
     @Test
     @DisplayName("Проверка метода комментирования вещи")
-    void check_comment_shouldReturnCreatedComment() throws Exception {
+    void checkCommentShouldReturnCreatedComment() throws Exception {
         long itemId = 1L;
         long userId = 1L;
         CommentDto commentDto = new CommentDto(null, "Комментарий", null, null);
@@ -87,7 +87,7 @@ class ItemControllerTest {
 
     @Test
     @DisplayName("Проверка метода обновления предмета")
-    void check_update_shouldReturnUpdateItemDto() throws Exception {
+    void checkUpdateShouldReturnUpdateItemDto() throws Exception {
         long itemId = 1L;
         long userId = 1L;
         User user = TestData.createTestUser(userId);
@@ -106,7 +106,7 @@ class ItemControllerTest {
 
     @Test
     @DisplayName("Проверка метода обновления предмета, когда предмета с таким ID нет")
-    void check_update_shouldThrowObjectNotFoundExceptionIfNonexistentId() throws Exception {
+    void checkUpdateShouldThrowObjectNotFoundExceptionIfNonexistentId() throws Exception {
         long itemId = 1L;
         long userId = 1L;
         User user = TestData.createTestUser(userId);
@@ -124,7 +124,7 @@ class ItemControllerTest {
 
     @Test
     @DisplayName("Проверка метода получения предмета по ID")
-    void check_get_shouldReturnItemDtoById() throws Exception {
+    void checkGetShouldReturnItemDtoById() throws Exception {
         long itemId = 1L;
         long userId = 1L;
         User user = TestData.createTestUser(userId);
@@ -140,7 +140,7 @@ class ItemControllerTest {
 
     @Test
     @DisplayName("Проверка метода получения предмета по несуществующему ID")
-    void check_get_shouldThrowObjectNotFoundExceptionIfNonexistentId() throws Exception {
+    void checkGetShouldThrowObjectNotFoundExceptionIfNonexistentId() throws Exception {
         long itemId = 1L;
         long userId = 1L;
         User user = TestData.createTestUser(userId);
@@ -155,7 +155,7 @@ class ItemControllerTest {
 
     @Test
     @DisplayName("Проверка метода получения списка предметов по ID пользователя")
-    void check_getByUserId_shouldReturnItemDtoListByUserId() throws Exception {
+    void checkGetByUserIdShouldReturnItemDtoListByUserId() throws Exception {
         long userId = 1L;
         User user = TestData.createTestUser(userId);
         List<ItemDto> userItems = Stream.of(
@@ -174,7 +174,7 @@ class ItemControllerTest {
 
     @Test
     @DisplayName("Проверка метода получения списка предметов по несуществующему ID пользователя")
-    void check_getByUserId_shouldThrowObjectNotFoundExceptionIfNonexistentId() throws Exception {
+    void checkGetByUserIdShouldThrowObjectNotFoundExceptionIfNonexistentId() throws Exception {
         long userId = 1L;
 
         when(itemService.getByUserId(anyLong(), any())).thenThrow(new ObjectNotFoundException("Пользователь", userId));
@@ -186,14 +186,14 @@ class ItemControllerTest {
 
     @Test
     @DisplayName("Проверка метода получения списка предметов по некорректному ID пользователя")
-    void check_getByUserId_shouldReturnInternalServerErrorStatus() throws Exception {
+    void checkGetByUserIdShouldReturnInternalServerErrorStatus() throws Exception {
         mockMvc.perform(get("/items").header(HEADER_USER_ID, "text25"))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     @DisplayName("Проверка метода поиска предметов по тексту")
-    void check_getBySearchText_shouldReturnItemDtoListBySearchText() throws Exception {
+    void checkGetBySearchTextShouldReturnItemDtoListBySearchText() throws Exception {
         long userId = 1L;
         User user = TestData.createTestUser(userId);
         List<ItemDto> searchedItems = Stream.of(
@@ -212,7 +212,7 @@ class ItemControllerTest {
 
     @Test
     @DisplayName("Проверка метода поиска предметов по пустому тексту")
-    void check_getBySearchText_shouldReturnEmptyItemDtoListByEmptySearchText() throws Exception {
+    void checkGetBySearchTextShouldReturnEmptyItemDtoListByEmptySearchText() throws Exception {
         when(itemService.getBySearchText(anyString(), any())).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/items/search").queryParam("text", ""))
@@ -223,7 +223,7 @@ class ItemControllerTest {
 
     @Test
     @DisplayName("Проверка метода удаления вещи")
-    void check_delete_shouldDeleteItem() throws Exception {
+    void checkDeleteShouldDeleteItem() throws Exception {
         long itemId = 1L;
         long userId = 1L;
         User user = TestData.createTestUser(userId);
@@ -235,7 +235,7 @@ class ItemControllerTest {
 
     @Test
     @DisplayName("Проверка метода удаления вещи по несуществующему ID")
-    void check_delete_shouldThrowObjectNotFoundExceptionIfNonexistentId() throws Exception {
+    void checkDeleteShouldThrowObjectNotFoundExceptionIfNonexistentId() throws Exception {
         long itemId = 9999L;
 
         doThrow(new ObjectNotFoundException("Предмет", itemId)).when(itemService).delete(itemId);

@@ -59,7 +59,7 @@ class ItemServiceTest {
 
     @Test
     @DisplayName("Проверка создания предмета с ID запроса")
-    void check_create_shouldCreateItemWithRequest() {
+    void checkCreateShouldCreateItemWithRequest() {
         long requestId = 1L;
         long userId = 1L;
         User user = TestData.createTestUser(userId);
@@ -80,7 +80,7 @@ class ItemServiceTest {
 
     @Test
     @DisplayName("Проверка создания предмета с ID несуществующего запроса")
-    void check_create_shouldThrowObjectNotFoundExceptionIfNonexistentRequestId() {
+    void checkCreateShouldThrowObjectNotFoundExceptionIfNonexistentRequestId() {
         long requestId = 1L;
         long userId = 1L;
         User user = TestData.createTestUser(userId);
@@ -95,7 +95,7 @@ class ItemServiceTest {
 
     @Test
     @DisplayName("Проверка создания предмета у несуществующего пользователя")
-    void check_create_shouldThrowObjectNotFoundExceptionIfNonexistentUser() {
+    void checkCreateShouldThrowObjectNotFoundExceptionIfNonexistentUser() {
         long userId = 9999L;
         ItemDto itemDto = TestData.createTestItemDto(true, 1L);
 
@@ -106,7 +106,7 @@ class ItemServiceTest {
 
     @Test
     @DisplayName("Проверка обновления статуса предмета")
-    void check_update_shouldUpdateItemAvailableStatus() {
+    void checkUpdateShouldUpdateItemAvailableStatus() {
         long itemId = 1L;
         long userId = 1L;
         User user = TestData.createTestUser(userId);
@@ -124,7 +124,7 @@ class ItemServiceTest {
 
     @Test
     @DisplayName("Проверка обновления описания предмета")
-    void check_update_shouldUpdateItemDescription() {
+    void checkUpdateShouldUpdateItemDescription() {
         long itemId = 1L;
         long userId = 1L;
         User user = TestData.createTestUser(userId);
@@ -142,7 +142,7 @@ class ItemServiceTest {
 
     @Test
     @DisplayName("Проверка обновления названия предмета")
-    void check_update_shouldUpdateItemName() {
+    void checkUpdateShouldUpdateItemName() {
         long itemId = 1L;
         long userId = 1L;
         User user = TestData.createTestUser(userId);
@@ -160,7 +160,7 @@ class ItemServiceTest {
 
     @Test
     @DisplayName("Проверка обновления предмета, если предмет не существует")
-    void check_update_shouldThrowObjectNotFoundExceptionIfNonexistentItemId() {
+    void checkUpdateShouldThrowObjectNotFoundExceptionIfNonexistentItemId() {
         long itemId = 9999L;
         long userId = 1L;
         ItemDto itemDto = new ItemDto(null, "Название", null, null, null, null,
@@ -174,7 +174,7 @@ class ItemServiceTest {
 
     @Test
     @DisplayName("Проверка обновления предмета, если пользователь (хозяин) не существует")
-    void check_update_shouldThrowObjectNotFoundExceptionIfNonexistentUserId() {
+    void checkUpdateShouldThrowObjectNotFoundExceptionIfNonexistentUserId() {
         long itemId = 1L;
         long userId = 9999L;
         ItemDto itemDto = new ItemDto(null, "Название", null, null, null, null,
@@ -188,7 +188,7 @@ class ItemServiceTest {
 
     @Test
     @DisplayName("Проверка создания комментария пользователем на вещь")
-    void check_comment_shouldCreateCommentToItem() {
+    void checkCommentShouldCreateCommentToItem() {
         long itemId = 1;
         long userId = 1;
         User user = TestData.createTestUser(userId);
@@ -214,7 +214,7 @@ class ItemServiceTest {
 
     @Test
     @DisplayName("Проверка создания комментария пользователем на несуществующую вещь")
-    void check_comment_shouldCreateCommentToNonexistentItem() {
+    void checkCommentShouldCreateCommentToNonexistentItem() {
         long itemId = 1;
         long userId = 1;
         User user = TestData.createTestUser(userId);
@@ -233,7 +233,7 @@ class ItemServiceTest {
 
     @Test
     @DisplayName("Проверка получения вещи по ID")
-    void check_get_shouldReturnItemDtoById() {
+    void checkGetShouldReturnItemDtoById() {
         long itemId = 1;
         long userId = 1;
         User user = TestData.createTestUser(userId);
@@ -249,7 +249,7 @@ class ItemServiceTest {
 
     @Test
     @DisplayName("Проверка получения вещи по несуществующему ID")
-    void check_get_shouldThrowObjectNotFoundExceptionIfNonexistentId() {
+    void checkGetShouldThrowObjectNotFoundExceptionIfNonexistentId() {
         long itemId = 1;
         long userId = 1;
         User user = TestData.createTestUser(userId);
@@ -262,7 +262,7 @@ class ItemServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения списка предметов по ID пользователя")
-    void check_getByUserId_shouldReturnItemDtoListByUserId() {
+    void checkGetByUserIdShouldReturnItemDtoListByUserId() {
         long userId = 1L;
         User user = TestData.createTestUser(userId);
         Item item1 = TestData.createTestItem(1L, true, user);
@@ -283,7 +283,7 @@ class ItemServiceTest {
 
     @Test
     @DisplayName("Проверка метода поиска предметов по тексту")
-    void check_getBySearchText_shouldReturnItemListByText() {
+    void checkGetBySearchTextShouldReturnItemListByText() {
         User user = TestData.createTestUser(1L);
         List<Item> searchItems = List.of(
                 TestData.createTestItem(1L,true, user),
@@ -301,13 +301,13 @@ class ItemServiceTest {
 
     @Test
     @DisplayName("Проверка метода поиска предметов по пустому тексту")
-    void check_getBySearchText_shouldReturnEmptyListIfSearchTextIsEmpty() {
+    void checkGetBySearchTextShouldReturnEmptyListIfSearchTextIsEmpty() {
         assertThat(itemService.getBySearchText("", null)).isEmpty();
     }
 
     @Test
     @DisplayName("Проверка удаления вещи по ID")
-    void check_delete_shouldDeleteItemById() {
+    void checkDeleteShouldDeleteItemById() {
         long itemId = 1L;
         long userId = 1L;
         User user = TestData.createTestUser(userId);
@@ -321,7 +321,7 @@ class ItemServiceTest {
 
     @Test
     @DisplayName("Проверка метода удаления вещи по несуществующему ID")
-    void check_delete_shouldThrowObjectNotFoundExceptionIfNonexistentId() {
+    void checkDeleteShouldThrowObjectNotFoundExceptionIfNonexistentId() {
         long id = 9999L;
         when(itemRepository.findById(anyLong())).thenReturn(Optional.empty());
 

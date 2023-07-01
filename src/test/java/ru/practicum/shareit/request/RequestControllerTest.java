@@ -36,7 +36,7 @@ public class RequestControllerTest {
 
     @Test
     @DisplayName("Проверка метода создания запроса")
-    void check_create_shouldReturnCreatedRequest() throws Exception {
+    void checkCreateShouldReturnCreatedRequest() throws Exception {
         long userId = 1L;
         RequestDto requestDto = RequestDto.builder()
                 .description("Описание запроса")
@@ -56,7 +56,7 @@ public class RequestControllerTest {
 
     @Test
     @DisplayName("Проверка метода получения собственных запросов")
-    void check_getOwnRequests_shouldReturnOwnUserRequests() throws Exception {
+    void checkGetOwnRequestsShouldReturnOwnUserRequests() throws Exception {
         long userId = 1L;
         List<RequestDto> expectedList = List.of(
                 TestData.createTestRequestDto(1L),
@@ -73,7 +73,7 @@ public class RequestControllerTest {
 
     @Test
     @DisplayName("Проверка метода получения запросов других пользователей")
-    void check_getOtherUsersRequests_shouldReturnOtherUsersRequests() throws Exception {
+    void checkGetOtherUsersRequestsShouldReturnOtherUsersRequests() throws Exception {
         long userId = 1L;
         List<RequestDto> expectedList = List.of(
                 TestData.createTestRequestDto(1L),
@@ -90,7 +90,7 @@ public class RequestControllerTest {
 
     @Test
     @DisplayName("Проверка метода получения запроса")
-    void check_get_shouldReturnRequestById() throws Exception {
+    void checkGetShouldReturnRequestById() throws Exception {
         long userId = 1L;
         long requestId = 1L;
         RequestDto requestDto = TestData.createTestRequestDto(requestId);
@@ -105,7 +105,7 @@ public class RequestControllerTest {
 
     @Test
     @DisplayName("Проверка метода получения запроса по несуществующему ID")
-    void check_get_shouldThrowObjectNotFoundExceptionIfNonexistentRequestId() throws Exception {
+    void checkGetShouldThrowObjectNotFoundExceptionIfNonexistentRequestId() throws Exception {
         long userId = 1L;
         long requestId = 1L;
 

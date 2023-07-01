@@ -47,7 +47,7 @@ public class RequestServiceTest {
 
     @Test
     @DisplayName("Проверка метода создания запроса")
-    void check_create_shouldReturnCreatedRequest() {
+    void checkCreateShouldReturnCreatedRequest() {
         long userId = 1L;
         User user = TestData.createTestUser(userId);
         RequestDto requestDto = RequestDto.builder()
@@ -65,7 +65,7 @@ public class RequestServiceTest {
 
     @Test
     @DisplayName("Проверка метода создания запроса при несуществующем пользователе")
-    void check_create_shouldThrowObjectNotFoundExceptionIfNonexistentUserId() {
+    void checkCreateShouldThrowObjectNotFoundExceptionIfNonexistentUserId() {
         long userId = 1L;
         RequestDto requestDto = RequestDto.builder()
                 .description("Описание запроса")
@@ -80,7 +80,7 @@ public class RequestServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения собственных запросов")
-    void check_getOwnRequests_shouldReturnOwnRequestList() {
+    void checkGetOwnRequestsShouldReturnOwnRequestList() {
         long userId = 1L;
         User user = TestData.createTestUser(userId);
 
@@ -100,7 +100,7 @@ public class RequestServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения собственных запросов по несуществующему ID")
-    void check_getOwnRequests_shouldThrowObjectNotFoundExceptionIfNonexistentUserId() {
+    void checkGetOwnRequestsShouldThrowObjectNotFoundExceptionIfNonexistentUserId() {
         long userId = 1L;
 
         when(userService.get(userId)).thenThrow(new ObjectNotFoundException("Пользователь", userId));
@@ -112,7 +112,7 @@ public class RequestServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения запросов других пользователей")
-    void check_getOtherUsersRequests_shouldReturnOtherUsersRequestList() {
+    void checkGetOtherUsersRequestsShouldReturnOtherUsersRequestList() {
         long userId = 1L;
         User user = TestData.createTestUser(userId);
 
@@ -132,7 +132,7 @@ public class RequestServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения запросов других пользователей по несуществующему ID")
-    void check_getOtherUsersRequests_shouldThrowObjectNotFoundExceptionIfNonexistentUserId() {
+    void checkGetOtherUsersRequestsShouldThrowObjectNotFoundExceptionIfNonexistentUserId() {
         long userId = 1L;
 
         when(userService.get(userId)).thenThrow(new ObjectNotFoundException("Пользователь", userId));
@@ -143,7 +143,7 @@ public class RequestServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения запроса по ID")
-    void check_get_shouldReturnRequestById() {
+    void checkGetShouldReturnRequestById() {
         long requestId = 1L;
         long userId = 1L;
 
@@ -161,7 +161,7 @@ public class RequestServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения запроса по несуществующему ID")
-    void check_get_shouldThrowObjectNotFoundExceptionIfNonExistentRequestId() {
+    void checkGetShouldThrowObjectNotFoundExceptionIfNonExistentRequestId() {
         long requestId = 1L;
         long userId = 1L;
 

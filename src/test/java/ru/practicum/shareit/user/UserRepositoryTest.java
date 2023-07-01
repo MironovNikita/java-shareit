@@ -33,7 +33,7 @@ class UserRepositoryTest {
 
     @Test
     @DisplayName("Поиск пользователя по email")
-    void findUserByEmail() {
+    void checkFindUserByEmailShouldReturnRightUserByEmail() {
         String name = "Тестовый пользователь";
         String email = "test123@email.ru";
         User expectedUser = new User(1L, name, email);

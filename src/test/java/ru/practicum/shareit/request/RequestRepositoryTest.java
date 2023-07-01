@@ -25,7 +25,7 @@ public class RequestRepositoryTest {
 
     @Test
     @DisplayName("Проверка метода получения собственных запросов")
-    void check_findAllByUserIdOrderByCreatedDesc_shouldReturnOwnRequestList() {
+    void checkFindAllByUserIdOrderByCreatedDescShouldReturnOwnRequestList() {
         long userId = 1L;
         User user = TestData.createTestUser(userId);
         userRepository.save(user);
@@ -49,7 +49,7 @@ public class RequestRepositoryTest {
 
     @Test
     @DisplayName("Проверка метода получения собственных запросов с корректными датами создания")
-    void check_findAllByUserIdOrderByCreatedDesc_shouldReturnOwnRequestListWithCorrectCreationDate() {
+    void checkFindAllByUserIdOrderByCreatedDescShouldReturnOwnRequestListWithCorrectCreationDate() {
         long userId = 1L;
         User user = TestData.createTestUser(userId);
         userRepository.save(user);
@@ -71,7 +71,7 @@ public class RequestRepositoryTest {
 
     @Test
     @DisplayName("Проверка метода получения запросов других пользователей")
-    void check_findAllByUserIdIsNotOrderByCreatedDesc_shouldReturnOtherUsersRequestList() {
+    void checkFindAllByUserIdIsNotOrderByCreatedDescShouldReturnOtherUsersRequestList() {
         long userId = 1L;
         User requester = TestData.createTestUser(userId);
         User user1 = TestData.createTestUser(2L);

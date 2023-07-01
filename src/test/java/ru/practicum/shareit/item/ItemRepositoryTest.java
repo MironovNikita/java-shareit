@@ -39,7 +39,7 @@ class ItemRepositoryTest {
     private TestEntityManager testEntityManager;
 
     @Test
-    void findAllByOwnerIdOrderByIdAsc() {
+    void checkFindAllByOwnerIdOrderByIdAscShouldReturnItemsByOwnerId() {
         User user1 = TestData.createTestUser(1L);
         Item item1 = new Item(1L, "Test", "Description", true,
                 user1, null, null, null, null);
@@ -66,7 +66,7 @@ class ItemRepositoryTest {
 
     @Test
     @DisplayName("Проверка поиска вещей по тексту/части текста")
-    void findAllByText() {
+    void checkFindAllByTextShouldReturnAllItemsByNameOrDescription() {
         User user = TestData.createTestUser(1L);
         userRepository.save(user);
 
@@ -94,7 +94,7 @@ class ItemRepositoryTest {
     }
 
     @Test
-    void findAllByRequestId() {
+    void checkFindAllByRequestIdShouldReturnAllItemsByRequestId() {
         User owner = TestData.createTestUser(1L);
         User requestor = TestData.createTestUser(2L);
         owner.setEmail("testing@test.ru");

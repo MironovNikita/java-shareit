@@ -39,7 +39,7 @@ public class BookingControllerTest {
 
     @Test
     @DisplayName("Проверка метода создания бронирования")
-    void check_create_shouldCreateBooking() throws Exception {
+    void checkCreateShouldCreateBooking() throws Exception {
         long bookingId = 1L;
         long userId = 1L;
 
@@ -67,7 +67,7 @@ public class BookingControllerTest {
 
     @Test
     @DisplayName("Проверка метода создания бронирования при недоступной вещи")
-    void check_create_shouldNotCreateBookingIfItemIsUnavailable() throws Exception {
+    void checkCreateShouldNotCreateBookingIfItemIsUnavailable() throws Exception {
         long itemId = 1L;
         long bookerId = 2L;
         long userId = 1L;
@@ -90,7 +90,7 @@ public class BookingControllerTest {
 
     @Test
     @DisplayName("Проверка метода создания бронирования при бронировании собственной вещи")
-    void check_create_shouldNotCreateBookingIfUserIdIsEqualToBookerId() throws Exception {
+    void checkCreateShouldNotCreateBookingIfUserIdIsEqualToBookerId() throws Exception {
         long itemId = 1L;
         long bookerId = 1L;
         long userId = 1L;
@@ -112,7 +112,7 @@ public class BookingControllerTest {
 
     @Test
     @DisplayName("Проверка метода обновления бронирования")
-    void check_update_shouldUpdateBooking() throws Exception {
+    void checkUpdateShouldUpdateBooking() throws Exception {
         long bookingId = 1L;
         long bookerId = 1L;
 
@@ -133,7 +133,7 @@ public class BookingControllerTest {
 
     @Test
     @DisplayName("Проверка метода получения бронирования по ID")
-    void check_getById_shouldGetBookingById() throws Exception {
+    void checkGetByIdShouldGetBookingById() throws Exception {
         long bookingId = 1L;
         long bookerId = 1L;
 
@@ -151,7 +151,7 @@ public class BookingControllerTest {
 
     @Test
     @DisplayName("Проверка метода получения бронирований бронирующего пользователя")
-    void check_getBookingsByBookerId_shouldReturnBookingListOfBookerByHisId() throws Exception {
+    void checkGetBookingsByBookerIdShouldReturnBookingListOfBookerByHisId() throws Exception {
         long bookerId = 1L;
         long bookingId1 = 1L;
         long bookingId2 = 2L;
@@ -173,7 +173,7 @@ public class BookingControllerTest {
 
     @Test
     @DisplayName("Проверка метода получения бронирований собственника вещей")
-    void check_getItemBookingsByOwnerId_shouldReturnBookingListOfOwnerByHisId() throws Exception {
+    void checkGetItemBookingsByOwnerIdShouldReturnBookingListOfOwnerByHisId() throws Exception {
         long ownerId = 1L;
         long bookingId1 = 1L;
         long bookingId2 = 2L;

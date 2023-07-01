@@ -19,7 +19,7 @@ public class BookingMapperTest {
 
     @Test
     @DisplayName("Проверка маппинга бронирования в BookingDatesDto")
-    void check_transformBookingToBookingDto_shouldBeCorrectTransform() {
+    void checkTransformBookingToBookingDtoShouldBeCorrectTransform() {
         User user = TestData.createTestUser(1L);
         Item item = TestData.createTestItem(1L, true, user);
 

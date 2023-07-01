@@ -30,7 +30,7 @@ public class CommentRepositoryTest {
 
     @Test
     @DisplayName("Проверка метода поиска всех комментариев по ID вещи")
-    void check_findAllByItemId_shouldReturnCommentListOfItemWithSomeId() {
+    void checkFindAllByItemIdShouldReturnCommentListOfItemWithSomeId() {
         User user1 = TestData.createTestUser(1L);
         User user2 = TestData.createTestUser(2L);
         user2.setEmail("test2@test.ru");

@@ -47,7 +47,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода создания бронирования")
-    void check_create_shouldCreateBooking() {
+    void checkCreateShouldCreateBooking() {
         long userId = 1L;
         long itemId = 1L;
 
@@ -68,7 +68,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода создания бронирования при некорректных датах бронирования")
-    void check_create_shouldThrowBookingExceptionIfBookingDatesAreIncorrect() {
+    void checkCreateShouldThrowBookingExceptionIfBookingDatesAreIncorrect() {
         long userId = 1L;
         long itemId = 1L;
 
@@ -85,7 +85,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода создания бронирования своей же вещи")
-    void check_create_shouldThrowSelfItemBookingExceptionIfUserIdIsEqualToOwnerId() {
+    void checkCreateShouldThrowSelfItemBookingExceptionIfUserIdIsEqualToOwnerId() {
         long userId = 1L;
         long itemId = 1L;
 
@@ -103,7 +103,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода создания бронирования при недоступности этой вещи")
-    void check_create_shouldThrowBookingExceptionIfItemIsUnavailable() {
+    void checkCreateShouldThrowBookingExceptionIfItemIsUnavailable() {
         long userId = 1L;
         long itemId = 1L;
 
@@ -121,7 +121,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода создания бронирования при несуществующей вещи")
-    void check_create_shouldThrowObjectNotFoundExceptionIfNonexistentItemId() {
+    void checkCreateShouldThrowObjectNotFoundExceptionIfNonexistentItemId() {
         long userId = 1L;
         long itemId = 1L;
 
@@ -136,7 +136,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода создания бронирования при несуществующем пользователе")
-    void check_create_shouldThrowObjectNotFoundExceptionIfNonexistentUserId() {
+    void checkCreateShouldThrowObjectNotFoundExceptionIfNonexistentUserId() {
         long userId = 1L;
         long itemId = 1L;
 
@@ -151,7 +151,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода обновления бронирования до утверждения")
-    void check_update_shouldUpdateBookingStatusToApproved() {
+    void checkUpdateShouldUpdateBookingStatusToApproved() {
         long userId = 1L;
         long itemId = 1L;
         long bookingId = 1L;
@@ -172,7 +172,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода обновления бронирования, если оно уже было утверждено")
-    void check_update_shouldThrowBookingExceptionIfUpdatingAlreadyApprovedStatus() {
+    void checkUpdateShouldThrowBookingExceptionIfUpdatingAlreadyApprovedStatus() {
         long userId = 1L;
         long itemId = 1L;
         long bookingId = 1L;
@@ -192,7 +192,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода обновления бронирования, если пользователь не собственник")
-    void check_update_shouldThrowObjectNotFoundExceptionIfUserIsNotOwnerOfItem() {
+    void checkUpdateShouldThrowObjectNotFoundExceptionIfUserIsNotOwnerOfItem() {
         long userId = 1L;
         long itemId = 1L;
         long bookingId = 1L;
@@ -212,7 +212,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода обновления несуществующего бронирования")
-    void check_update_shouldThrowObjectNotFoundExceptionIfNonexistentBooking() {
+    void checkUpdateShouldThrowObjectNotFoundExceptionIfNonexistentBooking() {
         long userId = 1L;
         long bookingId = 1L;
 
@@ -224,7 +224,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения бронирования по ID")
-    void check_getById_shouldReturnBookingById() {
+    void checkGetByIdShouldReturnBookingById() {
         long userId = 1L;
         long itemId = 1L;
         long bookingId = 1L;
@@ -243,7 +243,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения бронирования по ID, если пользователь ни собственник, ни бронирующий")
-    void check_getById_ThrowObjectNotFoundExceptionIfUserIsNotOwnerOrBooker() {
+    void checkGetByIdThrowObjectNotFoundExceptionIfUserIsNotOwnerOrBooker() {
         long userId = 1L;
         long itemId = 1L;
         long bookingId = 1L;
@@ -264,7 +264,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения несуществующего бронирования по ID")
-    void check_getById_ThrowObjectNotFoundExceptionIfNonexistentBooking() {
+    void checkGetByIdShouldThrowObjectNotFoundExceptionIfNonexistentBooking() {
         long userId = 1L;
         long bookingId = 1L;
 
@@ -276,14 +276,14 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения бронирований по ID бронирующего с условием ALL")
-    void check_getBookingsByBookerId_shouldUseMethod_findAllByBookerIdOrderByStartDesc() {
+    void checkGetBookingsByBookerIdShouldUseMethod_findAllByBookerIdOrderByStartDesc() {
         bookingService.getBookingsByBookerId(1L, BookingSearchState.ALL, null);
         verify(bookingRepository, times(1)).findAllByBookerIdOrderByStartDesc(anyLong(), any());
     }
 
     @Test
     @DisplayName("Проверка метода получения бронирований по ID бронирующего с условием CURRENT")
-    void check_getBookingsByBookerId_shouldUseMethod_findAllByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc() {
+    void checkGetBookingsByBookerIdShouldUseMethod_findAllByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc() {
         bookingService.getBookingsByBookerId(1L, BookingSearchState.CURRENT, null);
         verify(bookingRepository, times(1))
                 .findAllByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(anyLong(), any(), any(), any());
@@ -291,7 +291,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения бронирований по ID бронирующего с условием PAST")
-    void check_getBookingsByBookerId_shouldUseMethod_findAllByBookerIdAndEndBeforeOrderByStartDesc() {
+    void checkGetBookingsByBookerIdShouldUseMethodFindAllByBookerIdAndEndBeforeOrderByStartDesc() {
         bookingService.getBookingsByBookerId(1L, BookingSearchState.PAST, null);
         verify(bookingRepository, times(1))
                 .findAllByBookerIdAndEndBeforeOrderByStartDesc(anyLong(), any(), any());
@@ -299,7 +299,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения бронирований по ID бронирующего с условием FUTURE")
-    void check_getBookingsByBookerId_shouldUseMethod_findAllByBookerIdAndStartAfterOrderByStartDesc() {
+    void checkGetBookingsByBookerIdShouldUseMethodFindAllByBookerIdAndStartAfterOrderByStartDesc() {
         bookingService.getBookingsByBookerId(1L, BookingSearchState.FUTURE, null);
         verify(bookingRepository, times(1))
                 .findAllByBookerIdAndStartAfterOrderByStartDesc(anyLong(), any(), any());
@@ -307,7 +307,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения бронирований по ID бронирующего с условием WAITING")
-    void check_getBookingsByBookerId_shouldUseMethod_findAllByBookerIdAndStatusOrderByStartDesc_Waiting() {
+    void checkGetBookingsByBookerIdShouldUseMethodFindAllByBookerIdAndStatusOrderByStartDescWaiting() {
         bookingService.getBookingsByBookerId(1L, BookingSearchState.WAITING, null);
         verify(bookingRepository, times(1))
                 .findAllByBookerIdAndStatusOrderByStartDesc(anyLong(), any(), any());
@@ -315,7 +315,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения бронирований по ID бронирующего с условием REJECTED")
-    void check_getBookingsByBookerId_shouldUseMethod_findAllByBookerIdAndStatusOrderByStartDesc_Rejected() {
+    void checkGetBookingsByBookerIdShouldUseMethodFindAllByBookerIdAndStatusOrderByStartDescRejected() {
         bookingService.getBookingsByBookerId(1L, BookingSearchState.REJECTED, null);
         verify(bookingRepository, times(1))
                 .findAllByBookerIdAndStatusOrderByStartDesc(anyLong(), any(), any());
@@ -323,7 +323,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения бронирований собственником с условием ALL")
-    void check_getItemBookingsByOwnerId_shouldUseMethod_findAllByItemOwnerIdOrderByStartDesc() {
+    void checkGetItemBookingsByOwnerIdShouldUseMethodFindAllByItemOwnerIdOrderByStartDesc() {
         bookingService.getItemBookingsByOwnerId(1L, BookingSearchState.ALL, null);
         verify(bookingRepository, times(1))
                 .findAllByItemOwnerIdOrderByStartDesc(anyLong(), any());
@@ -331,7 +331,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения бронирований собственником с условием CURRENT")
-    void check_getItemBookingsByOwnerId_shouldUseMethod_findAllByItemOwnerIdAndStartBeforeAndEndAfterOrderByStartDesc() {
+    void checkGetItemBookingsByOwnerIdShouldUseMethodFindAllByItemOwnerIdAndStartBeforeAndEndAfterOrderByStartDesc() {
         bookingService.getItemBookingsByOwnerId(1L, BookingSearchState.CURRENT, null);
         verify(bookingRepository, times(1))
                 .findAllByItemOwnerIdAndStartBeforeAndEndAfterOrderByStartDesc(anyLong(), any(), any(), any());
@@ -339,7 +339,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения бронирований собственником с условием PAST")
-    void check_getItemBookingsByOwnerId_shouldUseMethod_findAllByItemOwnerIdAndEndBeforeOrderByStartDesc() {
+    void checkGetItemBookingsByOwnerIdShouldUseMethodFindAllByItemOwnerIdAndEndBeforeOrderByStartDesc() {
         bookingService.getItemBookingsByOwnerId(1L, BookingSearchState.PAST, null);
         verify(bookingRepository, times(1))
                 .findAllByItemOwnerIdAndEndBeforeOrderByStartDesc(anyLong(), any(), any());
@@ -347,7 +347,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения бронирований собственником с условием FUTURE")
-    void check_getItemBookingsByOwnerId_shouldUseMethod_findAllByItemOwnerIdAndStartAfterOrderByStartDesc() {
+    void checkGetItemBookingsByOwnerIdShouldUseMethodFindAllByItemOwnerIdAndStartAfterOrderByStartDesc() {
         bookingService.getItemBookingsByOwnerId(1L, BookingSearchState.FUTURE, null);
         verify(bookingRepository, times(1))
                 .findAllByItemOwnerIdAndStartAfterOrderByStartDesc(anyLong(), any(), any());
@@ -355,7 +355,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения бронирований собственником с условием WAITING")
-    void check_getItemBookingsByOwnerId_shouldUseMethod_findAllByItemOwnerIdAndStatusOrderByStartDesc_Waiting() {
+    void checkGetItemBookingsByOwnerIdShouldUseMethodFindAllByItemOwnerIdAndStatusOrderByStartDescWaiting() {
         bookingService.getItemBookingsByOwnerId(1L, BookingSearchState.WAITING, null);
         verify(bookingRepository, times(1))
                 .findAllByItemOwnerIdAndStatusOrderByStartDesc(anyLong(), any(), any());
@@ -363,7 +363,7 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения бронирований собственником с условием WAITING")
-    void check_getItemBookingsByOwnerId_shouldUseMethod_findAllByItemOwnerIdAndStatusOrderByStartDesc_Rejected() {
+    void checkGetItemBookingsByOwnerIdShouldUseMethodFindAllByItemOwnerIdAndStatusOrderByStartDescRejected() {
         bookingService.getItemBookingsByOwnerId(1L, BookingSearchState.REJECTED, null);
         verify(bookingRepository, times(1))
                 .findAllByItemOwnerIdAndStatusOrderByStartDesc(anyLong(), any(), any());

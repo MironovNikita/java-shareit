@@ -30,7 +30,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Проверка метода обновления пользователя (имени)")
-    void check_update_shouldUpdateUserName() {
+    void checkUpdateShouldUpdateUserName() {
         long id = 1L;
         String name = "Новое имя";
 
@@ -47,7 +47,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Проверка метода обновления пользователя (email)")
-    void check_update_shouldUpdateUserEmail() {
+    void checkUpdateShouldUpdateUserEmail() {
         long id = 1L;
         String email = "newemail@email.ru";
 
@@ -64,7 +64,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Проверка метода обновления пользователя при дублировании email")
-    void check_update_shouldThrowDuplicateEmailExceptionIfEmailExists() {
+    void checkUpdateShouldThrowDuplicateEmailExceptionIfEmailExists() {
         long id = 1L;
         String email = "test1234@email.ru";
 
@@ -79,7 +79,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Проверка метода обновления пользователя при ненайденном пользователе")
-    void check_update_shouldThrowObjectNotFoundExceptionIfUserNotFound() {
+    void checkUpdateShouldThrowObjectNotFoundExceptionIfUserNotFound() {
         UserDto userDto = new UserDto("Какое-то имя", "email@email.com");
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
@@ -88,7 +88,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения пользователя по ID")
-    void check_get_shouldReturnUserById() {
+    void checkGetShouldReturnUserById() {
         long id = 1L;
         User user = TestData.createTestUser(id);
 
@@ -100,7 +100,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения пользователя по несуществующему ID")
-    void check_get_shouldThrowObjectNotFoundException() {
+    void checkGetShouldThrowObjectNotFoundException() {
         long id = 9999L;
         when(userRepository.findById(id)).thenReturn(Optional.empty());
         assertThatThrownBy(() -> userService.get(id)).isInstanceOf(ObjectNotFoundException.class);
@@ -109,7 +109,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения списка всех пользователей")
-    void check_getAll_shouldReturnAllUserList() {
+    void checkGetAllShouldReturnAllUserList() {
         List<User> expectedList = List.of(TestData.createTestUser(1L),
                 TestData.createTestUser(2L),
                 TestData.createTestUser(3L));
@@ -122,7 +122,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Проверка метода получения списка всех пользователей при пустом списке")
-    void check_getAll_shouldReturnEmptyUserList() {
+    void checkGetAllShouldReturnEmptyUserList() {
         when(userRepository.findAll()).thenReturn(Collections.emptyList());
 
         assertThat(userService.getAll()).isEmpty();
@@ -131,7 +131,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Проверка метода удаления пользователя по ID")
-    void check_delete_shouldDeleteUser() {
+    void checkDeleteShouldDeleteUser() {
         long id = 1L;
         User user = TestData.createTestUser(id);
 
@@ -144,7 +144,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Проверка метода удаления пользователя по несуществующему ID")
-    void check_delete_shouldThrowObjectNotFoundExceptionIfNonexistentId() {
+    void checkDeleteShouldThrowObjectNotFoundExceptionIfNonexistentId() {
         long id = 9999L;
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 

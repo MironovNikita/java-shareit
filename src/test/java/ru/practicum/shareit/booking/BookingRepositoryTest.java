@@ -32,7 +32,7 @@ public class BookingRepositoryTest {
 
     @Test
     @DisplayName("Проверка метода получения бронирований по ID бронирующего с условием ALL")
-    void check_getBookingsByBookerId_shouldReturnAllBookingsByBookerId() {
+    void checkGetBookingsByBookerIdShouldReturnAllBookingsByBookerId() {
         long userId = 1L;
         User booker = TestData.createTestUser(userId);
         userRepository.save(booker);
@@ -68,7 +68,7 @@ public class BookingRepositoryTest {
 
     @Test
     @DisplayName("Проверка метода получения бронирований по ID собственника с условием ALL")
-    void check_getBookingsByBookerId_shouldReturnAllBookingsByOwnerId() {
+    void checkGetBookingsByBookerIdShouldReturnAllBookingsByOwnerId() {
         long userId = 1L;
         User booker = TestData.createTestUser(userId);
         userRepository.save(booker);

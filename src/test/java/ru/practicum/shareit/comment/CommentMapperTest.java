@@ -21,7 +21,7 @@ public class CommentMapperTest {
 
     @Test
     @DisplayName("Проверка маппинга бронирования в BookingDatesDto")
-    void check_transformCommentToCommentDto_shouldBeCorrectTransform() {
+    void checkTransformCommentToCommentDtoShouldBeCorrectTransform() {
         User user = TestData.createTestUser(1L);
         Item item = TestData.createTestItem(1L, true, user);
         Comment comment = new Comment(1L, "Комментарий", item, user, LocalDateTime.now());

@@ -40,7 +40,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Проверка метода на создание пользователя")
-    void check_create_shouldCreateUser() throws Exception {
+    void checkCreateShouldCreateUser() throws Exception {
         User user = TestData.createTestUser(1);
         UserDto userDto = new UserDto(user.getName(), user.getEmail());
 
@@ -55,7 +55,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Проверка метода на обновление пользователя")
-    void check_update_shouldUpdateUser() throws Exception {
+    void checkUpdateShouldUpdateUser() throws Exception {
         long id = 1L;
         User user = TestData.createTestUser(id);
         UserDto userDto = new UserDto(user.getName(), user.getEmail());
@@ -71,7 +71,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Проверка метода на обновление несуществующего пользователя")
-    void check_update_shouldReturnNotFoundStatusIfUpdatingNonexistentUser() throws Exception {
+    void checkUpdateShouldReturnNotFoundStatusIfUpdatingNonexistentUser() throws Exception {
         long id = 1L;
         User user = TestData.createTestUser(id);
         UserDto userDto = new UserDto(user.getName(), user.getEmail());
@@ -86,7 +86,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Проверка метода на получение пользователя по ID")
-    void check_get_shouldReturnUserById() throws Exception {
+    void checkGetShouldReturnUserById() throws Exception {
         long id = 1L;
         User user = TestData.createTestUser(id);
 
@@ -101,7 +101,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Проверка метода на получение пользователя по несуществующему ID")
-    void check_get_shouldReturnObjectNotFoundExceptionStatusIfNonexistentId() throws Exception {
+    void checkGetShouldReturnObjectNotFoundExceptionStatusIfNonexistentId() throws Exception {
         long id = 9999L;
 
         when(userService.get(id)).thenThrow(new ObjectNotFoundException("Пользователь", id));
@@ -112,13 +112,13 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Проверка метода на получение пользователя по некорректному ID")
-    void check_get_shouldReturnInternalServerErrorStatusIfIncorrectId() throws Exception {
+    void checkGetShouldReturnInternalServerErrorStatusIfIncorrectId() throws Exception {
         mockMvc.perform(get("/users/sometext75")).andExpect(status().isBadRequest());
     }
 
     @Test
     @DisplayName("Проверка метода на получение списка всех пользователей")
-    void check_getAll_shouldReturnAllUserList() throws Exception {
+    void checkGetAllShouldReturnAllUserList() throws Exception {
         List<User> expectedList = List.of(TestData.createTestUser(1L),
                                           TestData.createTestUser(2L),
                                           TestData.createTestUser(3L));
@@ -132,7 +132,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Проверка метода на получение списка всех пользователей, когда список пуст")
-    void check_getAll_shouldReturnEmptyUserList() throws Exception {
+    void checkGetAllShouldReturnEmptyUserList() throws Exception {
         when(userService.getAll()).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/users")).andExpect(status().isOk())
@@ -142,7 +142,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Проверка метода на удаление пользователя по ID")
-    void check_delete_shouldDeleteUserById() throws Exception {
+    void checkDeleteShouldDeleteUserById() throws Exception {
         long id = 1L;
 
         mockMvc.perform(delete(String.format("/users/%d", id))).andExpect(status().isOk());
@@ -151,7 +151,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Проверка метода на удаление пользователя по несуществующему ID")
-    void check_delete_shouldDeleteUserByNonexistentId() throws Exception {
+    void checkDeleteShouldDeleteUserByNonexistentId() throws Exception {
         long id = 9999L;
 
         doThrow(new ObjectNotFoundException("Пользователь", id)).when(userService).delete(id);
