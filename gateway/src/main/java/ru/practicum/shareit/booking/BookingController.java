@@ -16,13 +16,14 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
+import static ru.practicum.shareit.common.constants.HeaderGatewayConstants.HEADER_USER_ID;
+
 @Controller
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
 @Slf4j
 @Validated
 public class BookingController {
-    private static final String HEADER_USER_ID = "X-Sharer-User-Id";
     private final BookingClient bookingClient;
 
     @PostMapping
@@ -84,7 +85,7 @@ public class BookingController {
 
     private BookingState stateVerification(String stateParam) {
         return BookingState.from(stateParam).orElseThrow(() -> {
-            log.error("Неизвестный статус бронирования: {}}", stateParam);
+            log.error("Неизвестный статус бронирования: {}", stateParam);
             return new IllegalArgumentException(String.format("Unknown state: %s", stateParam));
         });
     }

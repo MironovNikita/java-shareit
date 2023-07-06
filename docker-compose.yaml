@@ -7,6 +7,7 @@ services:
       - "8080:8080"
     environment:
       - SHAREIT_SERVER_URL=http://server:9090
+      - JAVA_TOOL_OPTIONS=-Duser.timezone=Europe/Moscow
 
   server:
     build: ./server
@@ -18,6 +19,7 @@ services:
       - gateway
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/shareit
+      - JAVA_TOOL_OPTIONS=-Duser.timezone=Europe/Moscow
 
   db:
     image: postgres:13.7-alpine
@@ -28,3 +30,4 @@ services:
       - DB_NAME=shareit
       - POSTGRES_USER=shareit
       - POSTGRES_PASSWORD=shareit
+      - JAVA_TOOL_OPTIONS=-Duser.timezone=Europe/Moscow

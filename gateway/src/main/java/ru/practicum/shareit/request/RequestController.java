@@ -14,13 +14,14 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
+import static ru.practicum.shareit.common.constants.HeaderGatewayConstants.HEADER_USER_ID;
+
 @Controller
 @RequestMapping(path = "/requests")
 @RequiredArgsConstructor
 @Slf4j
 @Validated
 public class RequestController {
-    private static final String HEADER_USER_ID = "X-Sharer-User-Id";
     private final RequestClient requestClient;
 
     @PostMapping

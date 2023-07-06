@@ -28,7 +28,8 @@ public class UserController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> update(@PathVariable long id, @Validated(Update.class) @RequestBody UserGatewayDto userGatewayDto) {
+    public ResponseEntity<Object> update(@PathVariable long id,
+                                         @Validated(Update.class) @RequestBody UserGatewayDto userGatewayDto) {
         log.info("Запрос на обновление пользователя " + userGatewayDto);
         return userClient.update(id, userGatewayDto);
     }

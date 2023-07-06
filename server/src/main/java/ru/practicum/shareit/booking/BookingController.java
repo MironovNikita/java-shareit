@@ -10,13 +10,14 @@ import ru.practicum.shareit.common.pagination.Pagination;
 
 import java.util.List;
 
+import static ru.practicum.shareit.common.constants.HeaderConstants.HEADER_USER_ID;
+
 @Slf4j
 @RestController
 @Validated
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
 public class BookingController {
-    private static final String HEADER_USER_ID = "X-Sharer-User-Id";
     private final BookingService bookingService;
 
     @PostMapping

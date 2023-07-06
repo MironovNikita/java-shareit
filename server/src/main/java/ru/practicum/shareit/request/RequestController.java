@@ -10,13 +10,14 @@ import ru.practicum.shareit.request.dto.RequestDto;
 
 import java.util.List;
 
+import static ru.practicum.shareit.common.constants.HeaderConstants.HEADER_USER_ID;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @Validated
 @RequestMapping(path = "/requests")
 public class RequestController {
-    private static final String HEADER_USER_ID = "X-Sharer-User-Id";
     private final RequestService requestService;
 
     @PostMapping

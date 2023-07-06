@@ -17,13 +17,14 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.Collections;
 
+import static ru.practicum.shareit.common.constants.HeaderGatewayConstants.HEADER_USER_ID;
+
 @Controller
 @RequestMapping(path = "/items")
 @RequiredArgsConstructor
 @Slf4j
 @Validated
 public class ItemController {
-    private static final String HEADER_USER_ID = "X-Sharer-User-Id";
     private final ItemClient itemClient;
 
     @PostMapping
